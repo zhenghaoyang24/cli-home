@@ -1,14 +1,23 @@
 export interface Command {
-  type: 'search' | 'ai' | 'to' | 'config' | 'help' | 'clear' | 'history' | 'unknown';
+  type:
+    | "search"
+    | "ai"
+    | "to"
+    | "config"
+    | "help"
+    | "clear"
+    | "history"
+    | "unknown";
   args: string[];
   raw: string;
 }
 
 export interface OutputLine {
   id: string;
-  type: 'input' | 'output' | 'success' | 'error' | 'warning' | 'info';
+  type: "input" | "output" | "success" | "error" | "warning" | "info";
   content: string;
   timestamp: Date;
+  _typing?: boolean;
 }
 
 export interface SearchEngine {
@@ -33,7 +42,7 @@ export interface AIConfig {
 
 export interface AIMessage {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: Date;
 }

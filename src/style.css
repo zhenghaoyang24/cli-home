@@ -2,6 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   CLI Home — Design Tokens
+   ============================================ */
+:root {
+  /* Background layers */
+  --bg-page: #050508;
+  --bg-panel: #0c0c12;
+  --bg-surface: #0f0f18;
+  --bg-hint: #0a0a10;
+  --bg-bubble: #111118;
+  --bg-active: #1a1a30;
+
+  /* Borders */
+  --border-main: #1c1c30;
+
+  /* Text */
+  --text-body: #f8f9ff;
+  --text-primary: #9aa5ce;
+  --text-input: #a9b1d6;
+  --text-label: #4a527a;
+  --text-dim: #565f89;
+  --text-dimmer: #4e5574;
+  --text-hint: #4d5375; /* hint description */
+
+  /* Accent */
+  --accent: #7aa2f7;
+  --accent-bg: rgba(122, 162, 247, 0.08);
+  --accent-bg-md: rgba(122, 162, 247, 0.15);
+  --accent-bd: rgba(122, 162, 247, 0.2);
+  --accent-bd-str: rgba(122, 162, 247, 0.3);
+
+  /* Semantic */
+  --success: #9ece6a;
+  --success-bg: rgba(158, 206, 106, 0.15);
+  --error: #f7768e;
+  --warning: #e0af68;
+  --warning-bg: rgba(224, 175, 104, 0.04);
+  --warning-bd: rgba(224, 175, 104, 0.13);
+  --warning-bd-2: rgba(224, 175, 104, 0.15);
+
+  /* Window dots */
+  --dot-red: #ff5f56;
+  --dot-yellow: #ffbd2e;
+  --dot-green: #27c93f;
+
+  /* Scrollbar */
+  --scroll-track: #0a0a0f;
+  --scroll-thumb: #1c1c2e;
+  --scroll-thumb-hover: #282840;
+
+  /* Glow & shadow */
+  --glow-a: rgba(120, 160, 240, 0.05);
+  --glow-b: rgba(120, 160, 240, 0.02);
+  --glow-c: rgba(120, 160, 240, 0.1);
+  --glow-d: rgba(120, 160, 240, 0.04);
+  --shadow: rgba(100, 140, 220, 0.04);
+}
+
+/* ============================================
+   Base
+   ============================================ */
 * {
   box-sizing: border-box;
 }
@@ -9,17 +70,26 @@
 body {
   margin: 0;
   padding: 0;
-  background: #050508;
-  color: #f8f9ff;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  background: var(--bg-page);
+  color: var(--text-body);
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   min-height: 100vh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  cursor: pointer;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background:
@@ -42,32 +112,78 @@ body::before {
   justify-content: center;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: #1c1c2e; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #282840; }
-
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
 }
 
-.cursor-blink { animation: blink 1s infinite; }
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+}
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(120,160,240,0.05), 0 0 70px rgba(120,160,240,0.02); }
-  50% { box-shadow: 0 0 45px rgba(120,160,240,0.10), 0 0 100px rgba(120,160,240,0.04); }
+  0%,
+  100% {
+    box-shadow:
+      0 0 30px var(--glow-a),
+      0 0 70px var(--glow-b);
+  }
+  50% {
+    box-shadow:
+      0 0 45px var(--glow-c),
+      0 0 100px var(--glow-d);
+  }
 }
 
-.terminal-glow { animation: glow-pulse 5s ease-in-out infinite; }
+.terminal-glow {
+  animation: glow-pulse 5s ease-in-out infinite;
+}
 
 @keyframes text-flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.88; }
-  94% { opacity: 1; }
-  96% { opacity: 0.92; }
-  97% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.88;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.92;
+  }
+  97% {
+    opacity: 1;
+  }
 }
 
-.terminal-content { animation: text-flicker 10s infinite; }
+.terminal-content {
+  animation: text-flicker 10s infinite;
+}
