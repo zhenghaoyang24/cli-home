@@ -35,11 +35,11 @@ const ALL_HINTS: HintItem[] = [
   { command: "ai <问题>", desc: "发起 AI 对话" },
   { command: "ai config set <key> <value>", desc: "配置 AI 参数" },
   { command: "ai clear", desc: "清空对话历史" },
-  { command: "to <指令名>", desc: "执行快捷指令" },
-  { command: "to add <名称> <URL>", desc: "添加快捷指令" },
-  { command: "to list", desc: "列出快捷指令" },
-  { command: "to edit <名称> <URL>", desc: "修改快捷指令" },
-  { command: "to delete <名称>", desc: "删除快捷指令" },
+  { command: "goto <指令名>", desc: "执行快捷指令" },
+  { command: "goto add <名称> <URL>", desc: "添加快捷指令" },
+  { command: "goto list", desc: "列出快捷指令" },
+  { command: "goto edit <名称> <URL>", desc: "修改快捷指令" },
+  { command: "goto delete <名称>", desc: "删除快捷指令" },
 ];
 
 const hints = computed(() => {
@@ -108,10 +108,10 @@ const showHelp = () => {
   terminalStore.addOutput("│  <直接输入内容>              默认引擎搜索   │", "info");
   terminalStore.addOutput("│  ai <问题>                    发起 AI 对话   │", "info");
   terminalStore.addOutput("│  ai config set <key> <val>   配置 AI 参数    │", "info");
-  terminalStore.addOutput("│  to <指令名>                 执行快捷指令    │", "info");
-  terminalStore.addOutput("│  to add <名称> <URL>         添加快捷指令    │", "info");
-  terminalStore.addOutput("│  to list                     列出快捷指令    │", "info");
-  terminalStore.addOutput("│  to delete <名称>            删除快捷指令    │", "info");
+  terminalStore.addOutput("│  goto <指令名>               执行快捷指令    │", "info");
+  terminalStore.addOutput("│  goto add <名称> <URL>       添加快捷指令    │", "info");
+  terminalStore.addOutput("│  goto list                   列出快捷指令    │", "info");
+  terminalStore.addOutput("│  goto delete <名称>          删除快捷指令    │", "info");
   terminalStore.addOutput("└─────────────────────────────────────────────┘", "info");
   terminalStore.addOutput("", "output");
 };
@@ -215,7 +215,7 @@ const handleTo = (args: string[]) => {
     }
     case "add": {
       if (!name || !url) {
-        terminalStore.addOutput("用法: to add <名称> <URL>", "warning");
+        terminalStore.addOutput("用法: goto add <名称> <URL>", "warning");
         return;
       }
       try {
@@ -228,7 +228,7 @@ const handleTo = (args: string[]) => {
     }
     case "edit": {
       if (!name || !url) {
-        terminalStore.addOutput("用法: to edit <名称> <URL>", "warning");
+        terminalStore.addOutput("用法: goto edit <名称> <URL>", "warning");
         return;
       }
       try {
@@ -246,7 +246,7 @@ const handleTo = (args: string[]) => {
     }
     case "delete": {
       if (!name) {
-        terminalStore.addOutput("用法: to delete <名称>", "warning");
+        terminalStore.addOutput("用法: goto delete <名称>", "warning");
         return;
       }
       try {
@@ -264,12 +264,12 @@ const handleTo = (args: string[]) => {
     }
     case "execute": {
       if (!name) {
-        terminalStore.addOutput("用法: to <指令名>", "warning");
+        terminalStore.addOutput("用法: goto <指令名>", "warning");
         return;
       }
       const ok = shortcutsStore.executeShortcut(name);
       if (ok) terminalStore.addOutput(`→ 打开: ${name}`, "info");
-      else terminalStore.addOutput(`✗ 未找到: ${name}\n  输入 to list 查看所有指令`, "error");
+      else terminalStore.addOutput(`✗ 未找到: ${name}\n  输入 goto list 查看所有指令`, "error");
       break;
     }
   }
@@ -373,7 +373,7 @@ const executeCommand = () => {
     case "ai":
       handleAI(parsed.args);
       break;
-    case "to":
+    case "goto":
       handleTo(parsed.args);
       break;
     case "config":

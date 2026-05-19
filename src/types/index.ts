@@ -1,13 +1,5 @@
 export interface Command {
-  type:
-    | "search"
-    | "ai"
-    | "to"
-    | "config"
-    | "help"
-    | "clear"
-    | "history"
-    | "unknown";
+  type: "search" | "ai" | "goto" | "config" | "help" | "clear" | "history" | "unknown";
   args: string[];
   raw: string;
 }

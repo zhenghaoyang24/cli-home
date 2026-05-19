@@ -22,8 +22,8 @@ export function parseCommand(input: string): Command {
       return { type: "search", args, raw: input };
     case "ai":
       return { type: "ai", args, raw: input };
-    case "to":
-      return { type: "to", args, raw: input };
+    case "goto":
+      return { type: "goto", args, raw: input };
     case "config":
       return { type: "config", args, raw: input };
     default:
