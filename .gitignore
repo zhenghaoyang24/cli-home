@@ -5,7 +5,9 @@ node_modules/
 dist/
 
 # IDE
-.vscode/
+!.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
