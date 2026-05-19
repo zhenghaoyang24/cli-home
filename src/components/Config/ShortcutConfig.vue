@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { Plus, Trash2, Edit2 } from "lucide-vue-next";
 import { useShortcutsStore } from "@/stores/shortcuts";
 
+const { t } = useI18n();
 const shortcutsStore = useShortcutsStore();
 const showForm = ref(false);
 const editingId = ref<string | null>(null);
@@ -23,7 +25,7 @@ const openEditForm = (id: string, n: string, u: string) => {
 };
 const save = () => {
   if (!editName.value || !editUrl.value) {
-    alert("请填写完整信息");
+    alert(t("components.pleaseFillComplete"));
     return;
   }
   try {
@@ -39,7 +41,7 @@ const save = () => {
   }
 };
 const del = (id: string, name: string) => {
-  if (confirm(`确定删除 "${name}" 吗？`)) {
+  if (confirm(t("components.confirmDelete", { name }))) {
     try {
       shortcutsStore.deleteShortcut(id);
     } catch (e) {

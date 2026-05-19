@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { useAIStore } from "@/stores/ai";
+
+const { t } = useI18n();
 const aiStore = useAIStore();
 </script>
 
@@ -93,7 +96,7 @@ const aiStore = useAIStore();
       class="p-3 rounded text-[11px] font-mono text-(--warning)"
       style="background: var(--warning-bg); border: 1px solid var(--warning-bd)"
     >
-      ⚠ 请配置 API 密钥以使用 AI 功能
+      ⚠ {{ t("components.pleaseConfigApiKey") }}
     </div>
   </div>
 </template>

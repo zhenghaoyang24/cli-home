@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const props = defineProps<{ modelValue: string }>();
 
 const emit = defineEmits<{
@@ -17,9 +19,12 @@ watch(
   () => {
     nextTick(() => {
       if (inputRef.value)
-        inputRef.value.setSelectionRange(props.modelValue.length, props.modelValue.length);
+        inputRef.value.setSelectionRange(
+          props.modelValue.length,
+          props.modelValue.length
+        );
     });
-  },
+  }
 );
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -54,7 +59,7 @@ defineExpose({ focus });
       @keydown="handleKeyDown"
       class="flex-1 bg-transparent border-none outline-none text-base font-mono py-1 text-(--text-input)"
       style="caret-color: var(--accent)"
-      placeholder="输入命令..."
+      :placeholder="t('components.placeholderCommand')"
       autocomplete="off"
       autocapitalize="off"
       autocorrect="off"

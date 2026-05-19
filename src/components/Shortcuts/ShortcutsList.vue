@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { ExternalLink } from "lucide-vue-next";
 import { useShortcutsStore } from "@/stores/shortcuts";
 
+const { t } = useI18n();
 const shortcutsStore = useShortcutsStore();
 const searchQuery = ref("");
 
@@ -20,7 +22,7 @@ const openShortcut = (url: string) => window.open(url, "_blank");
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="搜索快捷指令..."
+        :placeholder="t('components.searchShortcut')"
         class="w-full px-3 py-2 bg-[#0d0d14] border border-[#1a1a2e] rounded text-[13px] font-mono text-[#c0caf5] placeholder-[#3b4261] focus:outline-none focus:border-[#7dcfff]/50"
       />
     </div>
@@ -57,9 +59,9 @@ const openShortcut = (url: string) => window.open(url, "_blank");
         class="flex flex-col items-center justify-center h-full text-[#3b4261]"
       >
         <div class="text-3xl mb-2 opacity-30">⌘</div>
-        <p class="text-xs font-mono">暂无快捷指令</p>
+        <p class="text-xs font-mono">{{ t("components.noShortcuts") }}</p>
         <p class="text-[10px] font-mono mt-0.5 text-[#1a1a2e]">
-          shortcut add &lt;name&gt; &lt;url&gt;
+          goto add &lt;name&gt; &lt;url&gt;
         </p>
       </div>
     </div>

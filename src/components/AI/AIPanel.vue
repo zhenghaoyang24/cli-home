@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
+import { useI18n } from "vue-i18n";
 import { Send, Trash2 } from "lucide-vue-next";
 import { useAIStore } from "@/stores/ai";
 
+const { t } = useI18n();
 const aiStore = useAIStore();
 const inputMessage = ref("");
 const isStreaming = ref(false);
@@ -17,7 +19,7 @@ const scrollToBottom = async () => {
 const handleSend = async () => {
   if (!inputMessage.value.trim()) return;
   if (!aiStore.hasApiKey) {
-    alert("请先配置 API 密钥");
+    alert(t("errors.apiKeyRequired"));
     return;
   }
   const userMsg = inputMessage.value;
@@ -76,9 +78,9 @@ const handleKeyDown = (e: KeyboardEvent) => {
         class="flex flex-col items-center justify-center h-full"
       >
         <div class="text-4xl mb-3 opacity-20">🤖</div>
-        <p class="text-xs font-mono text-(--text-dimmer)">启动 AI 对话</p>
+        <p class="text-xs font-mono text-(--text-dimmer)">{{ t("components.startAiChat") }}</p>
         <p class="text-[10px] font-mono mt-1 text-(--text-dim)">
-          请确保已在 Config 中配置 API 密钥
+          {{ t("components.pleaseConfigApiKeyInConfig") }}
         </p>
       </div>
 
@@ -132,7 +134,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
       class="px-5 py-2 text-[10px] font-mono text-(--warning)"
       style="border-top: 1px solid var(--warning-bd-2); background: var(--warning-bg)"
     >
-      ⚠ 请先在 Config 中设置 API 密钥
+      ⚠ {{ t("components.setApiKeyInConfig") }}
     </div>
 
     <div class="px-5 py-3 border-t border-(--border-main) bg-(--bg-surface)">
@@ -140,7 +142,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
         <input
           v-model="inputMessage"
           type="text"
-          placeholder="输入消息..."
+          :placeholder="t('components.placeholder')"
           :disabled="isStreaming"
           class="flex-1 px-3 py-2 rounded text-[13px] font-mono transition-colors disabled:opacity-40 bg-(--bg-panel) border border-(--border-main) text-(--text-input)"
           style="caret-color: var(--accent)"

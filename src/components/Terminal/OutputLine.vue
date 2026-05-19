@@ -31,9 +31,9 @@ const getConfig = (type: OutputLine["type"]) => {
       opacity: line.type === 'output' ? 0.78 : 1,
     }"
   >
-    <span v-if="getConfig(line.type).prefix" class="select-none mr-2">{{
+    <!-- <span v-if="getConfig(line.type).prefix" class="select-none mr-2">{{
       getConfig(line.type).prefix
-    }}</span>
+    }}</span> -->
     <span>{{ line.content }}</span>
     <span
       v-if="line._typing"

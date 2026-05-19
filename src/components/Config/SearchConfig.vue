@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { Plus, Trash2 } from "lucide-vue-next";
 import { useSearchStore } from "@/stores/search";
 
+const { t } = useI18n();
 const searchStore = useSearchStore();
 const showAdd = ref(false);
 const newName = ref("");
@@ -11,7 +13,7 @@ const newUrl = ref("");
 const add = () => {
   if (!newName.value || !newUrl.value) return;
   if (!newUrl.value.includes("{query}") && !newUrl.value.includes("${")) {
-    alert("URL 必须包含 {query} 或 ${} 占位符");
+    alert(t("components.urlMustIncludePlaceholder"));
     return;
   }
   searchStore.addEngine({ name: newName.value, url: newUrl.value });

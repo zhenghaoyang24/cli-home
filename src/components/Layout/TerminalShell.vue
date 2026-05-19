@@ -44,8 +44,9 @@ defineSlots<{
       </div>
     </div>
 
-    <p class="mt-6 text-xs font-mono tracking-widest text-(--text-dimmer)">
-      CLI HOME · VUE3 · TERMINAL
-    </p>
+    <div class="mt-6 text-xs font-mono tracking-widest text-(--text-dimmer)">
+      CLI HOME · TERMINAL ·
+      <a href="https://github.com/zhenghaoyang24/cli-home" target="_blank">GitHub</a>
+    </div>
   </div>
 </template>

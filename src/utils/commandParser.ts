@@ -135,17 +135,37 @@ export function parseAIArgs(args: string[]): {
 
 export function parseConfigArgs(args: string[]): {
   module: string;
-  action: string;
+  action: string | undefined;
   key?: string;
   value?: string;
 } {
-  if (args.length >= 2) {
+  if (args.length === 0) {
+    return { module: "", action: "" };
+  }
+
+  if (args[0] === "language") {
+    if (args.length === 1) {
+      return { module: "language", action: "" };
+    }
+    if (args[1] === "list") {
+      return { module: "language", action: "list" };
+    }
+    return { module: "language", action: "set", value: args[1] };
+  }
+
+  if (args[0] === "set") {
     return {
-      module: args[0],
-      action: args[1],
-      key: args[2],
-      value: args.slice(3).join(" "),
+      module: "set",
+      action: undefined,
+      key: args[1],
+      value: args.slice(2).join(" "),
     };
   }
-  return { module: "", action: "" };
+
+  return {
+    module: args[0],
+    action: args[1],
+    key: args[2],
+    value: args.slice(3).join(" "),
+  };
 }
