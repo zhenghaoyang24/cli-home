@@ -407,15 +407,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-col bg-[var(--bg-panel)]">
+  <div class="h-full w-full flex flex-col bg-(--bg-panel)">
     <div
       ref="outputRef"
-      class="flex-1 overflow-y-scroll overflow-x-hidden px-5 py-4 font-mono text-[13px] leading-relaxed space-y-0.5"
+      class="output-area flex-1 overflow-y-scroll overflow-x-hidden px-5 py-4 font-mono text-[13px] leading-relaxed space-y-0.5"
     >
       <OutputLine v-for="line in terminalStore.history" :key="line.id" :line="line" />
     </div>
     <HintBox :hints="hints" />
-    <div class="px-5 py-3 border-t border-[var(--border-main)] bg-[var(--bg-surface)]">
+    <div class="px-5 py-3 border-t border-(--border-main) bg-(--bg-surface)">
       <CommandInput
         v-model="terminalStore.currentInput"
         @submit="executeCommand"

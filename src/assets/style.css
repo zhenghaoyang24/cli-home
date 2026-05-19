@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* ============================================
    CLI Home — Design Tokens
@@ -12,7 +10,7 @@
   --bg-surface: #0f0f18;
   --bg-hint: #0a0a10;
   --bg-bubble: #111118;
-  --bg-active: #1a1a30;
+  --bg-active: #0000ff7a;
 
   /* Borders */
   --border-main: #1c1c30;
@@ -27,7 +25,7 @@
   --text-hint: #4d5375; /* hint description */
 
   /* Accent */
-  --accent: #7aa2f7;
+  --accent: #8db0fc;
   --accent-bg: rgba(122, 162, 247, 0.08);
   --accent-bg-md: rgba(122, 162, 247, 0.15);
   --accent-bd: rgba(122, 162, 247, 0.2);
@@ -53,11 +51,11 @@
   --scroll-thumb-hover: #282840;
 
   /* Glow & shadow */
-  --glow-a: rgba(120, 160, 240, 0.05);
-  --glow-b: rgba(120, 160, 240, 0.02);
-  --glow-c: rgba(120, 160, 240, 0.1);
-  --glow-d: rgba(120, 160, 240, 0.04);
-  --shadow: rgba(100, 140, 220, 0.04);
+  --glow-a: rgba(120, 160, 240, 0.1);
+  --glow-b: rgba(120, 160, 240, 0.04);
+  --glow-c: rgba(120, 160, 240, 0.2);
+  --glow-d: rgba(120, 160, 240, 0.08);
+  --shadow: rgba(100, 140, 220, 0.08);
 }
 
 /* ============================================
@@ -79,13 +77,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button {
-  cursor: pointer;
-  color: var(--text-primary);
-  background: none;
-  border: none;
-  outline: none;
-  font-family: inherit;
+@layer base {
+  button {
+    cursor: pointer;
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    outline: none;
+    font-family: inherit;
+  }
 }
 
 body::before {
@@ -162,28 +162,5 @@ body::before {
   animation: glow-pulse 5s ease-in-out infinite;
 }
 
-@keyframes text-flicker {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  92% {
-    opacity: 1;
-  }
-  93% {
-    opacity: 0.88;
-  }
-  94% {
-    opacity: 1;
-  }
-  96% {
-    opacity: 0.92;
-  }
-  97% {
-    opacity: 1;
-  }
-}
-
-.terminal-content {
-  animation: text-flicker 10s infinite;
-}
+/* 文本闪烁动画 */
+@import "effect-flicker.css";

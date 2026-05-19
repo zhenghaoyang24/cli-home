@@ -1,0 +1,140 @@
+/* ========= 赛博朋克控制台闪烁动画 ========= */
+
+/* 主文本闪烁 + 抖动 + 色彩偏移 */
+@keyframes cyberpunk-flicker {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow:
+      0 0 2px #0ff,
+      0 0 0 #f0f;
+    transform: translate(0, 0);
+    filter: brightness(1);
+  }
+  85% {
+    opacity: 0.97;
+    transform: translate(0.7px, 0.1px);
+    text-shadow:
+      0 0 3px #0ff,
+      1px 0 0 #f0f;
+  }
+  88% {
+    opacity: 1;
+    filter: brightness(0.99);
+  }
+  92% {
+    opacity: 0.83;
+    filter: brightness(0.87);
+    text-shadow:
+      0 0 10px #0ff,
+      5px 0 0 #f0f;
+    transform: translate(1.5px, -0.4px);
+  }
+  94% {
+    opacity: 1;
+    filter: brightness(1.06);
+    transform: translate(0, 0);
+  }
+  96% {
+    opacity: 0.94;
+    text-shadow:
+      0 0 4px #0ff,
+      -2px 0 0 #f0f;
+    transform: translate(-0.6px, 0.2px);
+  }
+  98% {
+    opacity: 1;
+    filter: brightness(1);
+    transform: translate(0, 0);
+    text-shadow:
+      0 0 1px #0ff,
+      0 0 0 #f0f;
+  }
+}
+
+/* 扫描线 + 噪点层（增强 CRT 质感） */
+.terminal-content .output-area {
+  animation: cyberpunk-flicker 16s infinite steps(1); /* steps(1) 让闪烁更生硬 */
+  position: relative;
+  color: #0ff; /* 基础青色，可自定义 */
+  background-color: #0a0a0f; /* 深色背景，衬托 */
+  padding: 1rem; /* 方便看到扫描线边缘 */
+  border-radius: 4px;
+  /* 可选：添加内阴影模拟屏幕凹陷 */
+  box-shadow:
+    inset 0 0 20px rgba(0, 255, 255, 0.1),
+    0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+/* 扫描线滚动条 */
+.terminal-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 255, 0.08) 0px,
+    rgba(0, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 4px,
+    rgba(255, 0, 255, 0.04) 4px,
+    rgba(255, 0, 255, 0.04) 5px,
+    transparent 5px,
+    transparent 8px
+  );
+  opacity: 0.5;
+  animation: scanline-scroll 6s linear infinite;
+  z-index: 1;
+}
+
+/* 扫描线垂直滚动 */
+@keyframes scanline-scroll {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* 额外的模拟噪点（静态故障） */
+.terminal-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.15 0"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.4"/></svg>');
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  animation: static-shift 0.5s steps(3) infinite;
+  z-index: 2;
+}
+
+/* 噪点抖动 */
+@keyframes static-shift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.15;
+  }
+  33% {
+    transform: translate(1px, -1px);
+    opacity: 0.25;
+  }
+  66% {
+    transform: translate(-1px, 1px);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.15;
+  }
+}

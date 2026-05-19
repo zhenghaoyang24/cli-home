@@ -16,15 +16,9 @@ defineProps<{
     style="background: var(--bg-hint); border-top: 1px solid var(--border-main)"
   >
     <div v-for="(h, i) in hints" :key="i" class="flex whitespace-pre">
-      <span style="color: var(--text-dimmer)">
-        {{ h.item.command.slice(0, h.matchLen) }}</span
-      >
-      <span style="color: var(--accent)">{{
-        h.item.command.slice(h.matchLen)
-      }}</span>
-      <span style="color: var(--text-hint); margin-left: 12px">{{
-        h.item.desc
-      }}</span>
+      <span style="color: var(--text-dimmer)"> {{ h.item.command.slice(0, h.matchLen) }}</span>
+      <span style="color: var(--accent)">{{ h.item.command.slice(h.matchLen) }}</span>
+      <span style="color: var(--text-hint); margin-left: 12px">{{ h.item.desc }}</span>
     </div>
   </div>
 </template>

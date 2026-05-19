@@ -17,12 +17,9 @@ watch(
   () => {
     nextTick(() => {
       if (inputRef.value)
-        inputRef.value.setSelectionRange(
-          props.modelValue.length,
-          props.modelValue.length
-        );
+        inputRef.value.setSelectionRange(props.modelValue.length, props.modelValue.length);
     });
-  }
+  },
 );
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -55,7 +52,7 @@ defineExpose({ focus });
       :value="modelValue"
       @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       @keydown="handleKeyDown"
-      class="flex-1 bg-transparent border-none outline-none text-base font-mono py-1 text-[var(--text-input)]"
+      class="flex-1 bg-transparent border-none outline-none text-base font-mono py-1 text-(--text-input)"
       style="caret-color: var(--accent)"
       placeholder="输入命令..."
       autocomplete="off"
@@ -63,6 +60,5 @@ defineExpose({ focus });
       autocorrect="off"
       spellcheck="false"
     />
-    <span class="w-2.5 h-[18px] cursor-blink" style="background: var(--accent)"></span>
   </div>
 </template>

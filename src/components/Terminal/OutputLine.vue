@@ -37,7 +37,7 @@ const getConfig = (type: OutputLine["type"]) => {
     <span>{{ line.content }}</span>
     <span
       v-if="line._typing"
-      class="cursor-blink inline-block w-[7px] h-[14px] ml-px align-middle"
+      class="cursor-blink inline-block w-1.75 h-3.5 ml-px align-middle"
       :style="{ background: getConfig(line.type).color }"
     ></span>
   </div>

@@ -8,8 +8,8 @@ const activeSection = ref("search");
 </script>
 
 <template>
-  <div class="flex h-full w-full bg-[var(--bg-panel)]">
-    <div class="w-36 p-3 border-r border-[var(--border-main)]">
+  <div class="flex h-full w-full bg-(--bg-panel)">
+    <div class="w-36 p-3 border-r border-(--border-main)">
       <nav class="space-y-0.5">
         <button
           v-for="s in [
@@ -20,9 +20,9 @@ const activeSection = ref("search");
           :key="s.id"
           class="w-full px-3 py-2 rounded text-left text-xs font-mono transition-all duration-200 border"
           :class="
-            activeSection === s.id
-              ? 'bg-[var(--accent-bg)] text-[var(--accent)] border-[var(--accent-bd)]'
-              : 'text-[var(--text-dim)] border-transparent'
+            activeSection == s.id
+              ? 'text-(--accent) bg-(--accent-bg) border-(--accent-bd-str)'
+              : 'text-(--text-dimmer) border-transparent'
           "
           @click="activeSection = s.id"
         >

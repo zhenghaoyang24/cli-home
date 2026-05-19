@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "lucide-vue-next": "^0.31.0",
-    "pinia": "^2.1.7",
+    "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "^3.4.21",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@tailwindcss/vite": "^4.0.0",
+    "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^20.11.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "eslint": "^10.4.0",
@@ -28,7 +28,7 @@
     "globals": "^17.6.0",
     "jiti": "^2.7.0",
     "prettier": "3.8.3",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4.3.0",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.59.4",
     "vite": "^5.0.12",

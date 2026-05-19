@@ -28,11 +28,7 @@ const save = () => {
   }
   try {
     if (editingId.value)
-      shortcutsStore.updateShortcut(
-        editingId.value,
-        editName.value,
-        editUrl.value,
-      );
+      shortcutsStore.updateShortcut(editingId.value, editName.value, editUrl.value);
     else shortcutsStore.addShortcut(editName.value, editUrl.value);
     showForm.value = false;
     editName.value = "";
@@ -56,19 +52,16 @@ const del = (id: string, name: string) => {
 <template>
   <div class="space-y-5">
     <div class="flex items-center gap-2">
-      <span class="text-lg text-[var(--text-primary)]">⌘</span>
-      <h3 class="text-sm font-mono tracking-wide text-[var(--text-primary)]">
-        Shortcut Config
-      </h3>
+      <span class="text-lg text-(--text-primary)">⌘</span>
+      <h3 class="text-sm font-mono tracking-wide text-(--text-primary)">Shortcut Config</h3>
     </div>
 
     <div class="flex items-center justify-between">
-      <label
-        class="text-[11px] font-mono tracking-wider uppercase text-[var(--text-label)]"
+      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)"
         >Shortcuts</label
       >
       <button
-        class="flex items-center gap-1 text-[10px] font-mono transition-colors text-[var(--accent)]"
+        class="flex items-center gap-1 text-[10px] font-mono transition-colors text-(--accent)"
         @click="openAddForm"
       >
         <Plus :size="12" /> ADD
@@ -77,35 +70,32 @@ const del = (id: string, name: string) => {
 
     <div
       v-if="showForm"
-      class="space-y-2 p-3 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-main)]"
+      class="space-y-2 p-3 rounded-lg bg-(--bg-surface) border border-(--border-main)"
     >
       <input
         v-model="editName"
         type="text"
         placeholder="Name"
-        class="w-full px-3 py-2 rounded text-[13px] font-mono bg-[var(--bg-panel)] border border-[var(--border-main)] text-[var(--text-primary)]"
+        class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-panel) border border-(--border-main) text-(--text-primary)"
         style="caret-color: var(--accent)"
       />
       <input
         v-model="editUrl"
         type="text"
         placeholder="URL"
-        class="w-full px-3 py-2 rounded text-[13px] font-mono bg-[var(--bg-panel)] border border-[var(--border-main)] text-[var(--text-primary)]"
+        class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-panel) border border-(--border-main) text-(--text-primary)"
         style="caret-color: var(--accent)"
       />
       <div class="flex gap-2">
         <button
-          class="flex-1 py-2 rounded text-[11px] font-mono transition-colors text-[var(--accent)]"
-          style="
-            background: var(--accent-bg);
-            border: 1px solid var(--accent-bd);
-          "
+          class="flex-1 py-2 rounded text-[11px] font-mono transition-colors text-(--accent)"
+          style="background: var(--accent-bg); border: 1px solid var(--accent-bd)"
           @click="save"
         >
           {{ editingId ? "Save" : "Add" }}
         </button>
         <button
-          class="px-3 py-2 rounded text-[11px] font-mono transition-colors border border-[var(--border-main)] text-[var(--text-dimmer)]"
+          class="px-3 py-2 rounded text-[11px] font-mono transition-colors border border-(--border-main) text-(--text-dimmer)"
           @click="showForm = false"
         >
           Cancel
@@ -117,34 +107,31 @@ const del = (id: string, name: string) => {
       <div
         v-for="sc in shortcutsStore.sortedShortcuts"
         :key="sc.id"
-        class="flex items-center justify-between p-2.5 rounded transition-colors bg-[var(--bg-surface)] border border-[var(--border-main)]"
+        class="flex items-center justify-between p-2.5 rounded transition-colors bg-(--bg-surface) border border-(--border-main)"
       >
         <div class="min-w-0 flex-1">
-          <div class="text-[13px] font-mono text-[var(--text-primary)]">
+          <div class="text-[13px] font-mono text-(--text-primary)">
             {{ sc.name }}
           </div>
-          <div class="text-[10px] font-mono truncate text-[var(--text-dimmer)]">
+          <div class="text-[10px] font-mono truncate text-(--text-dimmer)">
             {{ sc.url }}
           </div>
         </div>
         <div class="flex items-center gap-1 ml-2">
           <button
-            class="p-1 transition-colors text-[var(--text-dim)]"
+            class="p-1 transition-colors text-(--text-dim)"
             @click="openEditForm(sc.id, sc.name, sc.url)"
           >
             <Edit2 :size="13" />
           </button>
-          <button
-            class="p-1 transition-colors text-[var(--text-dim)]"
-            @click="del(sc.id, sc.name)"
-          >
+          <button class="p-1 transition-colors text-(--text-dim)" @click="del(sc.id, sc.name)">
             <Trash2 :size="13" />
           </button>
         </div>
       </div>
       <div
         v-if="!shortcutsStore.shortcuts.length"
-        class="text-center py-8 text-[11px] font-mono text-[var(--text-dimmer)]"
+        class="text-center py-8 text-[11px] font-mono text-(--text-dimmer)"
       >
         No shortcuts yet
       </div>
