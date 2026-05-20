@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import OutputLine from "./OutputLine.vue";
 import CommandInput from "./CommandInput.vue";
@@ -87,14 +87,14 @@ const findCommonPrefix = (strings: string[]): string => {
 };
 
 const scrollToBottom = () => {
-  if (outputRef.value) outputRef.value.scrollTop = outputRef.value.scrollHeight;
+  nextTick(() => {
+    if (outputRef.value) outputRef.value.scrollTop = outputRef.value.scrollHeight;
+  });
 };
 
 watch(
   () => terminalStore.history.map(h => h.content).join(""),
-  () => {
-    if (outputRef.value) outputRef.value.scrollTop = outputRef.value.scrollHeight;
-  },
+  () => scrollToBottom(),
 );
 
 const showHelp = () => {
@@ -490,10 +490,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-col bg-(--bg-panel)">
+  <div class="flex-1 min-h-0 w-full flex flex-col bg-(--bg-panel)">
     <div
       ref="outputRef"
-      class="output-area flex-1 overflow-y-scroll overflow-x-hidden px-5 py-4 font-mono text-[13px] leading-relaxed space-y-0.5"
+      class="output-area flex-1 overflow-y-auto overflow-x-hidden px-5 py-4 font-mono text-[13px] leading-relaxed space-y-0.5"
     >
       <OutputLine v-for="line in terminalStore.history" :key="line.id" :line="line" />
     </div>

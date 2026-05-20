@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import { ExternalLink } from "lucide-vue-next";
 import { useAIStore } from "@/stores/ai";
+import AppInput from "@/components/Common/AppInput.vue";
 
 const { t } = useI18n();
 const aiStore = useAIStore();
@@ -14,80 +16,70 @@ const aiStore = useAIStore();
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)"
-        >API Key</label
-      >
-      <input
-        :value="aiStore.config.apiKey"
-        @input="aiStore.updateConfig('apiKey', ($event.target as HTMLInputElement).value)"
+      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)">
+        API Key
+      </label>
+      <AppInput
+        :model-value="aiStore.config.apiKey"
+        @input="aiStore.updateConfig('apiKey', $event)"
         type="password"
         placeholder="sk-..."
-        class="w-full px-3 py-2 rounded text-[13px] font-mono transition-colors bg-(--bg-surface) border border-(--border-main) text-(--text-primary)"
-        style="caret-color: var(--accent)"
       />
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)"
-        >API URL</label
-      >
-      <input
-        :value="aiStore.config.apiUrl"
-        @input="aiStore.updateConfig('apiUrl', ($event.target as HTMLInputElement).value)"
+      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)">
+        API URL
+      </label>
+      <AppInput
+        :model-value="aiStore.config.apiUrl"
+        @input="aiStore.updateConfig('apiUrl', $event)"
         type="text"
         placeholder="https://api.openai.com/v1/chat/completions"
-        class="w-full px-3 py-2 rounded text-[13px] font-mono transition-colors bg-(--bg-surface) border border-(--border-main) text-(--text-primary)"
-        style="caret-color: var(--accent)"
       />
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)"
-        >Model</label
-      >
-      <input
-        :value="aiStore.config.model"
-        @input="aiStore.updateConfig('model', ($event.target as HTMLInputElement).value)"
+      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)">
+        Model
+      </label>
+      <AppInput
+        :model-value="aiStore.config.model"
+        @input="aiStore.updateConfig('model', $event)"
         type="text"
         placeholder="gpt-3.5-turbo"
-        class="w-full px-3 py-2 rounded text-[13px] font-mono transition-colors bg-(--bg-surface) border border-(--border-main) text-(--text-primary)"
-        style="caret-color: var(--accent)"
       />
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
-      <div class="space-y-1.5">
-        <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)"
-          >Temperature</label
-        >
-        <input
-          :value="aiStore.config.temperature"
-          @input="
-            aiStore.updateConfig(
-              'temperature',
-              parseFloat(($event.target as HTMLInputElement).value),
-            )
+    <div class="space-y-1.5">
+      <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)">
+        Model Provider
+      </label>
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          v-for="p in aiStore.PROVIDERS"
+          :key="p.key"
+          class="group relative flex flex-col items-start p-3 rounded-lg text-left border transition-all"
+          :class="
+            aiStore.config.provider === p.key
+              ? 'text-(--accent) bg-(--accent-bg) border-(--accent-bd-str)'
+              : 'text-(--text-dimmer) border-(--border-main) hover:border-(--text-dim)'
           "
-          type="number"
-          min="0"
-          max="2"
-          step="0.1"
-          class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-surface) border border-(--border-main) text-(--text-primary)"
-        />
-      </div>
-      <div class="space-y-1.5">
-        <label class="text-[11px] font-mono tracking-wider uppercase text-(--text-label)"
-          >Max Tokens</label
+          @click="aiStore.setProvider(p.key)"
         >
-        <input
-          :value="aiStore.config.maxTokens"
-          @input="
-            aiStore.updateConfig('maxTokens', parseInt(($event.target as HTMLInputElement).value))
-          "
-          type="number"
-          min="1"
-          class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-surface) border border-(--border-main) text-(--text-primary)"
-        />
+          <span class="text-[13px] font-mono font-semibold">{{ p.label }}</span>
+          <a
+            :href="p.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-1 text-[10px] font-mono flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
+            :class="aiStore.config.provider === p.key ? 'text-(--accent)' : 'text-(--text-dim)'"
+            @click.stop
+          >
+            {{ p.hostname }}
+            <ExternalLink :size="10" />
+          </a>
+        </button>
       </div>
     </div>
 

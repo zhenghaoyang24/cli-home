@@ -3,6 +3,9 @@ import { ref, computed } from "vue";
 import type { AIConfig, AIMessage } from "@/types";
 import {
   DEFAULT_AI_CONFIG,
+  PROVIDER_URLS,
+  PROVIDER_MODELS,
+  PROVIDERS,
   sendMessage as aiSendMessage,
   sendMessageStream as aiSendMessageStream,
   generateMessageId,
@@ -24,6 +27,12 @@ export const useAIStore = defineStore(
       } else {
         (config.value[key] as string) = String(value);
       }
+    };
+
+    const setProvider = (provider: string) => {
+      config.value.provider = provider;
+      config.value.apiUrl = PROVIDER_URLS[provider] || config.value.apiUrl;
+      config.value.model = PROVIDER_MODELS[provider] || config.value.model;
     };
 
     const addMessage = (message: AIMessage) => {
@@ -77,6 +86,8 @@ export const useAIStore = defineStore(
       isLoading,
       hasApiKey,
       updateConfig,
+      setProvider,
+      PROVIDERS,
       addMessage,
       clearMessages,
       sendMessageToAI,

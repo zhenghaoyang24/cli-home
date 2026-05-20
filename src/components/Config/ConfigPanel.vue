@@ -8,13 +8,13 @@ const activeSection = ref("search");
 </script>
 
 <template>
-  <div class="flex h-full w-full bg-(--bg-panel)">
+  <div class="flex-1 min-h-0 w-full flex bg-(--bg-panel)">
     <div class="w-36 p-3 border-r border-(--border-main)">
       <nav class="space-y-0.5">
         <button
           v-for="s in [
             { id: 'search', label: 'Search' },
-            { id: 'ai', label: 'AI' },
+            { id: 'ai', label: 'Chat' },
             { id: 'shortcuts', label: 'Shortcuts' },
           ]"
           :key="s.id"

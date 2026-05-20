@@ -72,7 +72,7 @@ export default {
     pleaseConfigApiKeyInConfig: "Please configure API key in Config",
     setApiKeyInConfig: "Set API Key in Config to use AI",
     placeholder: "Enter message...",
-    placeholderCommand: "Enter command...",
+    placeholderCommand: "Enter search content, command, or 'help' to view available commands",
     searchShortcut: "Search shortcuts...",
     noShortcuts: "No shortcuts",
     noSearchEngines: "No search engines",

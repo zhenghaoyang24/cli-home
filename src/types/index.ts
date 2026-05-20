@@ -28,6 +28,7 @@ export interface AIConfig {
   apiKey: string;
   apiUrl: string;
   model: string;
+  provider: string;
   temperature: number;
   maxTokens: number;
 }

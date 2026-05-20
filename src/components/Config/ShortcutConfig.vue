@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { Plus, Trash2, Edit2 } from "lucide-vue-next";
 import { useShortcutsStore } from "@/stores/shortcuts";
+import { showToast } from "@/stores/notification";
+import AppInput from "@/components/Common/AppInput.vue";
 
 const { t } = useI18n();
 const shortcutsStore = useShortcutsStore();
@@ -25,7 +27,7 @@ const openEditForm = (id: string, n: string, u: string) => {
 };
 const save = () => {
   if (!editName.value || !editUrl.value) {
-    alert(t("components.pleaseFillComplete"));
+    showToast(t("components.pleaseFillComplete"), "warning");
     return;
   }
   try {
@@ -37,7 +39,7 @@ const save = () => {
     editUrl.value = "";
     editingId.value = null;
   } catch (e) {
-    alert((e as Error).message);
+    showToast((e as Error).message, "error");
   }
 };
 const del = (id: string, name: string) => {
@@ -45,7 +47,7 @@ const del = (id: string, name: string) => {
     try {
       shortcutsStore.deleteShortcut(id);
     } catch (e) {
-      alert((e as Error).message);
+      showToast((e as Error).message, "error");
     }
   }
 };
@@ -74,20 +76,8 @@ const del = (id: string, name: string) => {
       v-if="showForm"
       class="space-y-2 p-3 rounded-lg bg-(--bg-surface) border border-(--border-main)"
     >
-      <input
-        v-model="editName"
-        type="text"
-        placeholder="Name"
-        class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-panel) border border-(--border-main) text-(--text-primary)"
-        style="caret-color: var(--accent)"
-      />
-      <input
-        v-model="editUrl"
-        type="text"
-        placeholder="URL"
-        class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-panel) border border-(--border-main) text-(--text-primary)"
-        style="caret-color: var(--accent)"
-      />
+      <AppInput v-model="editName" type="text" placeholder="Name" />
+      <AppInput v-model="editUrl" type="text" placeholder="URL" />
       <div class="flex gap-2">
         <button
           class="flex-1 py-2 rounded text-[11px] font-mono transition-colors text-(--accent)"

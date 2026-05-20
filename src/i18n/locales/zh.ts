@@ -72,7 +72,7 @@ export default {
     pleaseConfigApiKeyInConfig: "请确保已在 Config 中配置 API 密钥",
     setApiKeyInConfig: "请在 Config 中设置 API 密钥",
     placeholder: "输入消息...",
-    placeholderCommand: "输入命令...",
+    placeholderCommand: "输入搜索内容、命令或 help 查看可用命令",
     searchShortcut: "搜索快捷指令...",
     noShortcuts: "暂无快捷指令",
     noSearchEngines: "暂无搜索引擎",

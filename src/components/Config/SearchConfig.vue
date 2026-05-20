@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { Plus, Trash2 } from "lucide-vue-next";
 import { useSearchStore } from "@/stores/search";
+import { showToast } from "@/stores/notification";
+import AppInput from "@/components/Common/AppInput.vue";
 
 const { t } = useI18n();
 const searchStore = useSearchStore();
@@ -13,7 +15,7 @@ const newUrl = ref("");
 const add = () => {
   if (!newName.value || !newUrl.value) return;
   if (!newUrl.value.includes("{query}") && !newUrl.value.includes("${")) {
-    alert(t("components.urlMustIncludePlaceholder"));
+    showToast(t("components.urlMustIncludePlaceholder"), "warning");
     return;
   }
   searchStore.addEngine({ name: newName.value, url: newUrl.value });
@@ -68,20 +70,8 @@ const add = () => {
         v-if="showAdd"
         class="space-y-2 p-3 rounded-lg bg-(--bg-surface) border border-(--border-main)"
       >
-        <input
-          v-model="newName"
-          type="text"
-          placeholder="Engine name"
-          class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-panel) border border-(--border-main) text-(--text-primary)"
-          style="caret-color: var(--accent)"
-        />
-        <input
-          v-model="newUrl"
-          type="text"
-          placeholder="URL (with {query} or ${})"
-          class="w-full px-3 py-2 rounded text-[13px] font-mono bg-(--bg-panel) border border-(--border-main) text-(--text-primary)"
-          style="caret-color: var(--accent)"
-        />
+        <AppInput v-model="newName" type="text" placeholder="Engine name" />
+        <AppInput v-model="newUrl" type="text" placeholder="URL (with {query} or ${})" />
         <button
           class="w-full py-2 rounded text-[11px] font-mono transition-colors text-(--accent)"
           style="background: var(--accent-bg); border: 1px solid var(--accent-bd)"

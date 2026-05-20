@@ -3,6 +3,8 @@ import { ref, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import { Send, Trash2 } from "lucide-vue-next";
 import { useAIStore } from "@/stores/ai";
+import { showToast } from "@/stores/notification";
+import MarkdownRenderer from "./MarkdownRenderer.vue";
 
 const { t } = useI18n();
 const aiStore = useAIStore();
@@ -19,11 +21,22 @@ const scrollToBottom = async () => {
 const handleSend = async () => {
   if (!inputMessage.value.trim()) return;
   if (!aiStore.hasApiKey) {
-    alert(t("errors.apiKeyRequired"));
+    showToast(t("errors.apiKeyRequired"), "warning");
     return;
   }
   const userMsg = inputMessage.value;
   inputMessage.value = "";
+  const userMsgId = Date.now().toString();
+  const aiMsgId = (Date.now() + 1).toString();
+
+  aiStore.addMessage({
+    id: userMsgId,
+    role: "user",
+    content: userMsg,
+    timestamp: new Date(),
+  });
+  scrollToBottom();
+
   isStreaming.value = true;
   streamingResponse.value = "";
   try {
@@ -32,20 +45,14 @@ const handleSend = async () => {
       scrollToBottom();
     });
     aiStore.addMessage({
-      id: Date.now().toString(),
-      role: "user",
-      content: userMsg,
-      timestamp: new Date(),
-    });
-    aiStore.addMessage({
-      id: (Date.now() + 1).toString(),
+      id: aiMsgId,
       role: "assistant",
       content: streamingResponse.value,
       timestamp: new Date(),
     });
     streamingResponse.value = "";
   } catch (error) {
-    alert((error as Error).message);
+    showToast((error as Error).message, "error");
   } finally {
     isStreaming.value = false;
   }
@@ -60,7 +67,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-col bg-(--bg-panel)">
+  <div class="flex-1 min-h-0 w-full flex flex-col bg-(--bg-panel)">
     <div class="flex items-center justify-between px-5 py-2.5 border-b border-(--border-main)">
       <span class="text-xs font-mono tracking-wider text-(--text-label)">AI · CHAT</span>
       <button
@@ -107,7 +114,8 @@ const handleKeyDown = (e: KeyboardEvent) => {
               : { background: 'var(--bg-bubble)', borderTopLeftRadius: '2px' }
           "
         >
-          <p class="whitespace-pre-wrap break-all">{{ msg.content }}</p>
+          <p v-if="msg.role === 'user'" class="whitespace-pre-wrap break-all">{{ msg.content }}</p>
+          <MarkdownRenderer v-else :content="msg.content" />
         </div>
       </div>
 
@@ -122,9 +130,8 @@ const handleKeyDown = (e: KeyboardEvent) => {
           class="max-w-[75%] px-3 py-2 rounded-lg text-[13px] font-mono leading-relaxed"
           style="background: var(--bg-bubble); border-top-left-radius: 2px"
         >
-          <p class="whitespace-pre-wrap break-all text-(--text-primary)">
-            {{ streamingResponse }}<span class="cursor-blink" style="color: var(--accent)">▌</span>
-          </p>
+          <MarkdownRenderer :content="streamingResponse" />
+          <span class="cursor-blink" style="color: var(--accent)">▌</span>
         </div>
       </div>
     </div>
