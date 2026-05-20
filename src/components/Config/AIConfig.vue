@@ -21,7 +21,7 @@ const aiStore = useAIStore();
       </label>
       <AppInput
         :model-value="aiStore.config.apiKey"
-        @input="aiStore.updateConfig('apiKey', $event)"
+        @update:model-value="aiStore.updateConfig('apiKey', $event)"
         type="password"
         placeholder="sk-..."
       />
@@ -33,7 +33,7 @@ const aiStore = useAIStore();
       </label>
       <AppInput
         :model-value="aiStore.config.apiUrl"
-        @input="aiStore.updateConfig('apiUrl', $event)"
+        @update:model-value="aiStore.updateConfig('apiUrl', $event)"
         type="text"
         placeholder="https://api.openai.com/v1/chat/completions"
       />
@@ -45,7 +45,7 @@ const aiStore = useAIStore();
       </label>
       <AppInput
         :model-value="aiStore.config.model"
-        @input="aiStore.updateConfig('model', $event)"
+        @update:model-value="aiStore.updateConfig('model', $event)"
         type="text"
         placeholder="gpt-3.5-turbo"
       />
@@ -73,7 +73,9 @@ const aiStore = useAIStore();
             target="_blank"
             rel="noopener noreferrer"
             class="mt-1 text-[10px] font-mono flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
-            :class="aiStore.config.provider === p.key ? 'text-(--accent)' : 'text-(--text-dim)'"
+            :class="
+              aiStore.config.provider === p.key ? 'text-(--accent)' : 'text-(--text-dim)'
+            "
             @click.stop
           >
             {{ p.hostname }}

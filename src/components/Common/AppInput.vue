@@ -10,15 +10,12 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "update:modelValue", value: string): void;
-  (e: "input", value: string): void;
 }>();
 
 const focused = ref(false);
 
 const onInput = (e: Event) => {
-  const val = (e.target as HTMLInputElement).value;
-  emit("update:modelValue", val);
-  emit("input", val);
+  emit("update:modelValue", (e.target as HTMLInputElement).value);
 };
 </script>
 

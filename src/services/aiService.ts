@@ -1,4 +1,5 @@
 import type { AIConfig } from "@/types";
+import { uid } from "@/utils/id";
 
 export const PROVIDERS = [
   {
@@ -50,6 +51,26 @@ export const DEFAULT_AI_CONFIG: AIConfig = {
   maxTokens: 1000,
 };
 
+function buildBody(config: AIConfig, message: string, stream: boolean): string {
+  const base = {
+    model: config.model,
+    messages: [{ role: "user", content: message }],
+    stream,
+  };
+  if (config.provider === "deepseek") {
+    return JSON.stringify({
+      ...base,
+      thinking: { type: "enabled" },
+      reasoning_effort: "high",
+    });
+  }
+  return JSON.stringify({
+    ...base,
+    temperature: config.temperature,
+    max_tokens: config.maxTokens,
+  });
+}
+
 export async function sendMessage(config: AIConfig, message: string): Promise<string> {
   if (!config.apiKey) {
     throw new Error("请先配置API密钥");
@@ -61,13 +82,7 @@ export async function sendMessage(config: AIConfig, message: string): Promise<st
       "Content-Type": "application/json",
       Authorization: `Bearer ${config.apiKey}`,
     },
-    body: JSON.stringify({
-      model: config.model,
-      messages: [{ role: "user", content: message }],
-      thinking: { type: "enabled" },
-      reasoning_effort: "high",
-      stream: false,
-    }),
+    body: buildBody(config, message, false),
   });
 
   if (!response.ok) {
@@ -85,6 +100,8 @@ export async function sendMessage(config: AIConfig, message: string): Promise<st
   return data.choices?.[0]?.message?.content || "无响应";
 }
 
+const decoder = new TextDecoder();
+
 export async function sendMessageStream(
   config: AIConfig,
   message: string,
@@ -100,13 +117,7 @@ export async function sendMessageStream(
       "Content-Type": "application/json",
       Authorization: `Bearer ${config.apiKey}`,
     },
-    body: JSON.stringify({
-      model: config.model,
-      messages: [{ role: "user", content: message }],
-      temperature: config.temperature,
-      max_tokens: config.maxTokens,
-      stream: true,
-    }),
+    body: buildBody(config, message, true),
   });
 
   if (!response.ok) {
@@ -125,7 +136,6 @@ export async function sendMessageStream(
     throw new Error("无法获取响应流");
   }
 
-  const decoder = new TextDecoder();
   let buffer = "";
 
   while (true) {
@@ -155,5 +165,5 @@ export async function sendMessageStream(
 }
 
 export function generateMessageId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  return uid();
 }

@@ -5,12 +5,14 @@ import { Plus, Trash2 } from "lucide-vue-next";
 import { useSearchStore } from "@/stores/search";
 import { showToast } from "@/stores/notification";
 import AppInput from "@/components/Common/AppInput.vue";
+import ConfirmDialog from "@/components/Common/ConfirmDialog.vue";
 
 const { t } = useI18n();
 const searchStore = useSearchStore();
 const showAdd = ref(false);
 const newName = ref("");
 const newUrl = ref("");
+const pendingDelete = ref<{ id: string; name: string } | null>(null);
 
 const add = () => {
   if (!newName.value || !newUrl.value) return;
@@ -22,6 +24,20 @@ const add = () => {
   newName.value = "";
   newUrl.value = "";
   showAdd.value = false;
+};
+
+const confirmDelete = () => {
+  if (!pendingDelete.value) return;
+  try {
+    searchStore.removeEngine(pendingDelete.value.id);
+    showToast(
+      t("messages.searchDeleted", { name: pendingDelete.value.name }),
+      "success",
+    );
+  } catch (e) {
+    showToast((e as Error).message, "error");
+  }
+  pendingDelete.value = null;
 };
 </script>
 
@@ -98,12 +114,21 @@ const add = () => {
           <button
             v-if="searchStore.engines.length > 1"
             class="p-1 transition-colors ml-2 text-(--text-dim)"
-            @click="searchStore.removeEngine(e.id)"
+            @click="pendingDelete = { id: e.id, name: e.name }"
           >
             <Trash2 :size="14" />
           </button>
         </div>
       </div>
     </div>
+
+    <ConfirmDialog
+      v-if="pendingDelete"
+      title="Delete Search Engine"
+      :message="t('components.confirmDelete', { name: pendingDelete.name })"
+      confirmText="Delete"
+      @confirm="confirmDelete"
+      @cancel="pendingDelete = null"
+    />
   </div>
 </template>

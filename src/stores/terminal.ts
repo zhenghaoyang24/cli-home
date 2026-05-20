@@ -1,18 +1,17 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { OutputLine, TerminalHistoryItem } from "@/types";
-
-const TYPE_SPEED = 10; // 每“批”字符之间的间隔时间
-const TYPE_BATCH = 30; // 每“批”字符的数量
-const LINE_PAUSE = 10; // 每个输出行之间的暂停时间
-
-let typeTimer: ReturnType<typeof setTimeout> | null = null;
-
-const uid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+import { uid } from "@/utils/id";
 
 export const useTerminalStore = defineStore(
   "terminal",
   () => {
+    const TYPE_SPEED = 10;
+    const TYPE_BATCH = 30;
+    const LINE_PAUSE = 10;
+
+    let typeTimer: ReturnType<typeof setTimeout> | null = null;
+
     const history = ref<OutputLine[]>([]);
     const currentInput = ref("");
     const commandHistory = ref<TerminalHistoryItem[]>([]);

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useToast } from "@/stores/notification";
-
-const { toasts } = useToast();
+import { toasts } from "@/stores/notification";
 
 const typeStyle: Record<string, string> = {
   success:

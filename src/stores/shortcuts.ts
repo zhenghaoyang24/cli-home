@@ -14,6 +14,11 @@ export const useShortcutsStore = defineStore(
   () => {
     const shortcuts = ref<Shortcut[]>(DEFAULT_SHORTCUTS);
 
+    function ensureProtocol(url: string): string {
+      if (/^https?:\/\//i.test(url)) return url;
+      return `https://${url}`;
+    }
+
     const addShortcut = (name: string, url: string) => {
       if (shortcuts.value.some(s => s.name.toLowerCase() === name.toLowerCase())) {
         throw new Error("快捷指令已存在");
@@ -21,7 +26,7 @@ export const useShortcutsStore = defineStore(
       const item: Shortcut = {
         id: Date.now().toString(36) + Math.random().toString(36).substr(2),
         name,
-        url,
+        url: ensureProtocol(url),
         createdAt: new Date(),
       };
       shortcuts.value.push(item);
@@ -35,7 +40,7 @@ export const useShortcutsStore = defineStore(
         throw new Error("快捷指令名称已存在");
       }
       existing.name = name;
-      existing.url = url;
+      existing.url = ensureProtocol(url);
       return existing;
     };
 

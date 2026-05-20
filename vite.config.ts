@@ -14,4 +14,13 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes("node_modules/marked")) return "marked";
+        },
+      },
+    },
+  },
 });

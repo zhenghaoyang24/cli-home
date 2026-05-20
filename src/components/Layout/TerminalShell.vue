@@ -35,7 +35,7 @@ defineSlots<{
       </div>
 
       <div
-        class="terminal-content flex flex-col overflow-hidden"
+        class="terminal-content relative flex flex-col overflow-hidden"
         style="height: 420px; width: 100%"
       >
         <slot />
