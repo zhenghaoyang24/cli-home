@@ -1,41 +1,193 @@
 <div align="center">
-<pre style="color: #7aa2f7; font-family: 'Courier New', monospace; font-size: 11px; line-height: 1.2; display: inline-block;">
-    ██████╗ ██╗     ██╗    ██╗  ██╗ ██████╗ ███╗   ███╗███████╗
-   ██╔════╝ ██║     ██║    ██║  ██║██╔═══██╗████╗ ████║██╔════╝
-   ██║      ██║     ██║    ███████║██║   ██║██╔████╔██║█████╗
-   ██║      ██║     ██║    ██╔══██║██║   ██║██║╚██╔╝██║██╔══╝
-   ╚██████╗ ███████╗██║    ██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗
-    ╚═════╝ ╚══════╝╚═╝    ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-</pre>
+<img width="734" alt="CLI Home" src="https://github.com/user-attachments/assets/2547eee0-57f0-4a3f-bca0-4fb24c167d11" />
 </div>
 
 <div align="center">
 
-**CLI Home — Terminal Browser Home**
+# CLI Home
 
-A browser homepage that brings the classic terminal experience to your new tab.
+**A browser homepage that brings the classic terminal experience to your new tab.**
 
 [![Vue](https://img.shields.io/badge/Vue-3.4-4FC08D?logo=vue.js)](https://vuejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?logo=typescript)](https://www.typescriptlang.org)
 [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?logo=vite)](https://vitejs.dev)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3-06B6D4?logo=tailwind-css)](https://tailwindcss.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 </div>
 
 ---
 
-<img width="734" height="478" alt="image" src="https://github.com/user-attachments/assets/2547eee0-57f0-4a3f-bca0-4fb24c167d11" />
+## Overview
 
+CLI Home transforms your browser's new tab page into a full-featured terminal interface. Instead of a static grid of bookmarks, you get a command-driven environment where every action happens through typed commands — just like the terminal you already know.
 
-## Quick Start
+Built with Vue 3 and designed for speed, it serves as both a productivity tool and a customizable homepage.
 
-1. Clone the repository
-2. Install dependencies with `pnpm install`
-3. Run development server with `pnpm dev`
-4. Build for production with `pnpm build`
+## Features
 
----
+### Terminal Commands
+
+- **`help`** — Display the full command reference
+- **`clear`** — Clear the terminal output
+- **`history`** — Browse previously executed commands
+- **Tab completion** — Auto-complete commands and paths
+- **Command history navigation** — Use arrow keys to recall past commands
+
+### Search
+
+- Search the web directly from the command line using `search <keyword>`
+- Add and manage custom search engines with custom URL templates
+- Set a default search engine for quick queries
+- Supports engines like Google, Bing, DuckDuckGo, Baidu, and any custom endpoint
+
+### Shortcuts (goto)
+
+- Create named shortcuts for your favorite URLs with `goto add <name> <url>`
+- Open shortcuts instantly with `goto <name>`
+- List, edit, and delete shortcuts through terminal commands or the config panel
+- Visual grid display in the Shortcuts tab
+
+### AI Chat
+
+- Built-in AI chat panel powered by configurable API endpoints
+- Supports **DeepSeek**, **OpenAI**, **Anthropic (Claude)**, and **Google AI (Gemini)**
+- Streaming responses with real-time token display
+- Markdown rendering for formatted AI output
+- Chat message history with clear functionality
+
+### Multi-language Support
+
+- English and Chinese (中文) interface
+- Switch languages with `config language en` or `config language cn`
+- Language preference is persisted across sessions
+
+### Config Panel
+
+- Visual configuration interface organized into three sections:
+  - **Search** — Manage search engines and default engine
+  - **Chat** — Configure AI provider, API key, endpoint URL, and model
+  - **Shortcuts** — Add, edit, and delete URL shortcuts
+
+## Technology Stack
+
+| Layer                | Technology                            |
+| -------------------- | ------------------------------------- |
+| Framework            | Vue 3 (Composition API)               |
+| Language             | TypeScript                            |
+| Build Tool           | Vite 5                                |
+| Styling              | TailwindCSS 4 + CSS Custom Properties |
+| State Management     | Pinia with persisted state            |
+| Internationalization | vue-i18n                              |
+| AI Streaming         | Fetch API with ReadableStream         |
+| Markdown Rendering   | marked                                |
+
+## Requirements
+
+- **Node.js** >= 18
+- **pnpm** >= 8 (recommended) or npm / yarn
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/cli-home.git
+
+# Navigate to the project directory
+cd cli-home
+
+# Install dependencies
+pnpm install
+```
+
+## Usage
+
+### Development
+
+```bash
+pnpm dev
+```
+
+This starts the Vite development server. Open the URL printed in your terminal (default: `http://localhost:5173`).
+
+### Production Build
+
+```bash
+pnpm build
+```
+
+The output is written to the `dist/` directory and can be deployed to any static hosting service (Vercel, Netlify, GitHub Pages, etc.).
+
+### Preview Production Build
+
+```bash
+pnpm preview
+```
+
+### Code Quality
+
+```bash
+pnpm lint    # Run ESLint
+pnpm format  # Run Prettier
+```
+
+## Command Reference
+
+| Command                       | Description                          |
+| ----------------------------- | ------------------------------------ |
+| `help`                        | Show help and all available commands |
+| `clear`                       | Clear terminal output                |
+| `history`                     | Show command history                 |
+| `search <keyword>`            | Search with default engine           |
+| `search <engine> <keyword>`   | Search with specific engine          |
+| `search add <name> <URL>`     | Add a custom search engine           |
+| `search list`                 | List all search engines              |
+| `search default <engine>`     | Set default search engine            |
+| `search delete <engine>`      | Remove a search engine               |
+| `ai <question>`               | Ask AI a question                    |
+| `ai config set <key> <value>` | Configure AI settings                |
+| `ai clear`                    | Clear AI chat history                |
+| `goto <name>`                 | Open a shortcut                      |
+| `goto add <name> <URL>`       | Add a new shortcut                   |
+| `goto list`                   | List all shortcuts                   |
+| `goto edit <name> <URL>`      | Edit an existing shortcut            |
+| `goto delete <name>`          | Delete a shortcut                    |
+| `config language <en\|cn>`    | Switch interface language            |
+| `config language list`        | List available languages             |
+
+## Project Structure
+
+```
+src/
+├── assets/          # Global styles and design tokens
+├── components/
+│   ├── AI/          # AI chat panel and Markdown renderer
+│   ├── Common/      # Reusable UI components (Input, Toast)
+│   ├── Config/      # Configuration panels (Search, AI, Shortcuts)
+│   ├── Layout/      # Terminal shell layout wrapper
+│   ├── Shortcuts/   # Shortcut grid display
+│   └── Terminal/    # Terminal output, input, hints
+├── i18n/            # Internationalization (en, zh)
+├── services/        # API services (AI, search, storage)
+├── stores/          # Pinia stores (ai, config, search, shortcuts, terminal)
+├── types/           # TypeScript type definitions
+└── utils/           # Command parsers and utilities
+```
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -am 'Add my feature'`
+4. Push to the branch: `git push origin feature/my-feature`
+5. Open a pull request
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+Special thanks to **Trae**, **DeepSeek**, **OpenAI**, and the broader AI programming community for their contributions and support.
