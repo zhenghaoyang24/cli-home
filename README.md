@@ -22,7 +22,7 @@
 
 CLI Home transforms your browser's new tab page into a full-featured terminal interface. Instead of a static grid of bookmarks, you get a command-driven environment where every action happens through typed commands — just like the terminal you already know.
 
-Built with Vue 3 and designed for speed, it serves as both a productivity tool and a customizable homepage.
+Review link: [https://cli-home.netlify.app/](https://cli-home.netlify.app/)
 
 ## Features
 
@@ -97,7 +97,7 @@ git clone https://github.com/your-username/cli-home.git
 cd cli-home
 
 # Install dependencies
-pnpm install
+npm install
 ```
 
 ## Usage
@@ -187,7 +187,3 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-Special thanks to **Trae**, **DeepSeek**, **OpenAI**, and the broader AI programming community for their contributions and support.
