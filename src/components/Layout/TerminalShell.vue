@@ -13,9 +13,7 @@ defineSlots<{
         width: 720px;
         max-width: calc(100vw - 48px);
         background: var(--bg-panel);
-        box-shadow:
-          0 0 60px var(--shadow),
-          0 0 120px var(--glow-b),
+        box-shadow: 0 0 60px var(--shadow), 0 0 120px var(--glow-b),
           0 30px 80px rgba(0, 0, 0, 0.9);
       "
     >
