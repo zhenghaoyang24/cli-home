@@ -24,6 +24,9 @@ A browser homepage that brings the classic terminal experience to your new tab.
 
 ---
 
+<img width="734" height="478" alt="image" src="https://github.com/user-attachments/assets/2547eee0-57f0-4a3f-bca0-4fb24c167d11" />
+
+
 ## Quick Start
 
 1. Clone the repository
