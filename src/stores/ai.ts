@@ -8,6 +8,7 @@ import {
   PROVIDERS,
   sendMessage as aiSendMessage,
   sendMessageStream as aiSendMessageStream,
+  sendMessageStreamWithHistory as aiSendMessageStreamWithHistory,
   generateMessageId,
 } from "@/services/aiService";
 
@@ -68,6 +69,17 @@ export const useAIStore = defineStore(
       }
     };
 
+    const sendMessageStreamWithHistory = async (
+      callback: (chunk: string) => void,
+    ): Promise<void> => {
+      isLoading.value = true;
+      try {
+        await aiSendMessageStreamWithHistory(config.value, messages.value, callback);
+      } finally {
+        isLoading.value = false;
+      }
+    };
+
     const createUserMessage = (content: string): AIMessage => ({
       id: generateMessageId(),
       role: "user",
@@ -98,6 +110,7 @@ export const useAIStore = defineStore(
       clearMessages,
       sendMessageToAI,
       sendMessageToAIStream,
+      sendMessageStreamWithHistory,
       createUserMessage,
       createAssistantMessage,
     };

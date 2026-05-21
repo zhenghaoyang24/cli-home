@@ -82,6 +82,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @layer base {
   button {
     cursor: pointer;
@@ -98,13 +105,6 @@ body {
     outline: none;
     border-color: var(--border-main);
   }
-}
-
-#app {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 ::-webkit-scrollbar {

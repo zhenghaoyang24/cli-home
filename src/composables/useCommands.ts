@@ -9,11 +9,12 @@ import {
   parseCommand,
   parseSearchArgs,
   parseToArgs,
-  parseAIArgs,
+  parseChatArgs,
   parseConfigArgs,
 } from "@/utils/commandParser";
 import { setLocale } from "@/i18n";
 import { useBgEffect, ALL_EFFECTS } from "./useBgEffect";
+import { uid } from "@/utils/id";
 
 export function useCommands() {
   const { t } = useI18n();
@@ -38,9 +39,9 @@ export function useCommands() {
       { command: "search list", desc: t("terminal.searchList") },
       { command: "search default <engine>", desc: t("terminal.searchDefault") },
       { command: "search delete <engine>", desc: t("terminal.searchDelete") },
-      { command: "ai <question>", desc: t("terminal.aiQuestion") },
-      { command: "ai config set <key> <val>", desc: t("terminal.aiConfig") },
-      { command: "ai clear", desc: t("terminal.aiClear") },
+      { command: "chat <question>", desc: t("terminal.chatQuestion") },
+      { command: "chat set <key> <url> <model>", desc: t("terminal.chatConfig") },
+      { command: "chat clear", desc: t("terminal.chatClear") },
       { command: "goto <name>", desc: t("terminal.gotoName") },
       { command: "goto add <name> <URL>", desc: t("terminal.gotoAdd") },
       { command: "goto list", desc: t("terminal.gotoList") },
@@ -113,9 +114,9 @@ export function useCommands() {
       ["search default <engine>", t("terminal.searchDefault")],
       ["search delete <engine>", t("terminal.searchDelete")],
       ["<direct input>", t("terminal.directInput")],
-      ["ai <question>", t("terminal.aiQuestion")],
-      ["ai config set <key> <val>", t("terminal.aiConfig")],
-      ["ai clear", t("terminal.aiClear")],
+      ["chat <question>", t("terminal.chatQuestion")],
+      ["chat set <key> <url> <model>", t("terminal.chatConfig")],
+      ["chat clear", t("terminal.chatClear")],
       ["goto <name>", t("terminal.gotoName")],
       ["goto add <name> <URL>", t("terminal.gotoAdd")],
       ["goto list", t("terminal.gotoList")],
@@ -306,28 +307,23 @@ export function useCommands() {
     }
   };
 
-  const handleAI = async (args: string[]) => {
-    const { action, key, value, query } = parseAIArgs(args);
+  const handleChat = async (args: string[]) => {
+    const { action, key, url, model, query } = parseChatArgs(args);
     switch (action) {
       case "config": {
         if (!key) {
-          terminalStore.addOutput(t("messages.aiConfigUsage"), "warning");
+          terminalStore.addOutput(t("messages.chatConfigUsage"), "warning");
           return;
         }
-        try {
-          aiStore.updateConfig(key as keyof typeof aiStore.config, value);
-          terminalStore.addOutput(
-            t("messages.aiConfigUpdated", { key, value: key === "apiKey" ? "••••••" : value }),
-            "success",
-          );
-        } catch (e) {
-          terminalStore.addOutput(`✗ ${(e as Error).message}`, "error");
-        }
+        aiStore.updateConfig("apiKey", key);
+        aiStore.updateConfig("apiUrl", url);
+        aiStore.updateConfig("model", model);
+        terminalStore.addOutput(t("messages.chatConfigUpdated"), "success");
         break;
       }
       case "clear": {
         aiStore.clearMessages();
-        terminalStore.addOutput(t("messages.aiHistoryCleared"), "success");
+        terminalStore.addOutput(t("messages.chatHistoryCleared"), "success");
         break;
       }
       case "chat": {
@@ -339,12 +335,31 @@ export function useCommands() {
           terminalStore.addOutput(t("messages.pleaseConfigApiKey"), "warning");
           return;
         }
+        terminalStore.flushOutput();
         terminalStore.addOutput(t("messages.thinking"), "info");
+        terminalStore.flushOutput();
+        const streamLineId = uid();
+        terminalStore.history.push({
+          id: streamLineId,
+          content: "",
+          timestamp: new Date(),
+          type: "output" as const,
+        });
         try {
-          const res = await aiStore.sendMessageToAI(query);
-          terminalStore.addOutput(res, "output");
+          let fullContent = "";
+          const idx = () => terminalStore.history.findIndex(l => l.id === streamLineId);
+          await aiStore.sendMessageToAIStream(query, chunk => {
+            fullContent += chunk;
+            if (idx() !== -1) terminalStore.history[idx()].content = fullContent;
+          });
+          if (idx() !== -1) terminalStore.history[idx()].content = fullContent;
+          const userMsg = aiStore.createUserMessage(query);
+          const asstMsg = aiStore.createAssistantMessage(fullContent);
+          aiStore.addMessage(userMsg);
+          aiStore.addMessage(asstMsg);
         } catch (err) {
-          terminalStore.addOutput(`✗ ${(err as Error).message}`, "error");
+          const idx = terminalStore.history.findIndex(l => l.id === streamLineId);
+          if (idx !== -1) terminalStore.history[idx].content = `✗ ${(err as Error).message}`;
         }
         break;
       }
@@ -455,8 +470,8 @@ export function useCommands() {
       case "search":
         handleSearch(parsed.args);
         break;
-      case "ai":
-        handleAI(parsed.args);
+      case "chat":
+        handleChat(parsed.args);
         break;
       case "goto":
         handleTo(parsed.args);

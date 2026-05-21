@@ -22,8 +22,8 @@ export function parseCommand(input: string): Command {
       return { type: "history", args, raw: input };
     case "search":
       return { type: "search", args, raw: input };
-    case "ai":
-      return { type: "ai", args, raw: input };
+    case "chat":
+      return { type: "chat", args, raw: input };
     case "goto":
       return { type: "goto", args, raw: input };
     case "config":
@@ -109,21 +109,23 @@ export function parseToArgs(args: string[]): {
   }
 }
 
-export function parseAIArgs(args: string[]): {
-  action: string;
+export function parseChatArgs(args: string[]): {
+  action: "chat" | "config" | "clear";
   key?: string;
-  value?: string;
+  url?: string;
+  model?: string;
   query: string;
 } {
   if (args.length === 0) {
     return { action: "chat", query: "" };
   }
 
-  if (args[0] === "config" && args[1] === "set" && args.length >= 4) {
+  if (args[0] === "set" && args.length >= 4) {
     return {
       action: "config",
-      key: args[2],
-      value: args.slice(3).join(" "),
+      key: args[1],
+      url: args[2],
+      model: args[3],
       query: "",
     };
   }

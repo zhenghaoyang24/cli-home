@@ -63,7 +63,7 @@ const handleSend = async () => {
   isStreaming.value = true;
   streamingResponse.value = "";
   try {
-    await aiStore.sendMessageToAIStream(userMsg, chunk => {
+    await aiStore.sendMessageStreamWithHistory(chunk => {
       streamingResponse.value += chunk;
       scrollToBottom();
     });
