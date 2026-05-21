@@ -19,12 +19,9 @@ watch(
   () => {
     nextTick(() => {
       if (inputRef.value)
-        inputRef.value.setSelectionRange(
-          props.modelValue.length,
-          props.modelValue.length
-        );
+        inputRef.value.setSelectionRange(props.modelValue.length, props.modelValue.length);
     });
-  }
+  },
 );
 
 const handleKeyDown = (event: KeyboardEvent) => {

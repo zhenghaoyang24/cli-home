@@ -13,6 +13,7 @@ import {
   parseConfigArgs,
 } from "@/utils/commandParser";
 import { setLocale } from "@/i18n";
+import { useBgEffect, ALL_EFFECTS } from "./useBgEffect";
 
 export function useCommands() {
   const { t } = useI18n();
@@ -20,6 +21,7 @@ export function useCommands() {
   const searchStore = useSearchStore();
   const aiStore = useAIStore();
   const shortcutsStore = useShortcutsStore();
+  const { setEffect } = useBgEffect();
 
   const hints = computed(() => {
     const input = terminalStore.currentInput;
@@ -45,6 +47,8 @@ export function useCommands() {
       { command: "goto delete <name>", desc: t("terminal.gotoDelete") },
       { command: "config language <en|cn>", desc: t("terminal.configLanguage") },
       { command: "config language list", desc: t("terminal.configLanguageList") },
+      { command: "config bg <effect>", desc: t("terminal.configBg") },
+      { command: "config bg list", desc: t("terminal.configBgList") },
     ];
     return allHints
       .filter(h => h.command.toLowerCase().startsWith(lower))
@@ -117,6 +121,8 @@ export function useCommands() {
       ["goto delete <name>", t("terminal.gotoDelete")],
       ["config language <en|cn>", t("terminal.configLanguage")],
       ["config language list", t("terminal.configLanguageList")],
+      ["config bg <effect>", t("terminal.configBg")],
+      ["config bg list", t("terminal.configBgList")],
     ];
     cmds.forEach(([cmd, desc]) => {
       terminalStore.addOutput(`│  ${cmd.padEnd(30)} ${desc.padEnd(34)}│`, "info");
@@ -366,6 +372,29 @@ export function useCommands() {
     }
     if (module === "set") {
       terminalStore.addOutput(t("messages.configDeprecatedSet"), "warning");
+      return;
+    }
+    if (module === "bg") {
+      if (action === "list") {
+        terminalStore.addOutput(t("messages.bgEffectList"), "info");
+        const listOrder = ["orb", "dither", "fater", "galaxy", "letter", "plasma", "soft"];
+        listOrder.forEach((name, i) => {
+          const desc = t(`messages.bgEffectDesc.${name}`);
+          terminalStore.addOutput(
+            `  ${String(i + 1).padStart(2)}  ${name.padEnd(8)} ${desc}`,
+            "success",
+          );
+        });
+        return;
+      }
+      if (action && ALL_EFFECTS.includes(action)) {
+        setEffect(action);
+        terminalStore.addOutput(t("messages.bgEffectSet", { effect: action }), "success");
+      } else if (action) {
+        terminalStore.addOutput(t("messages.bgEffectNotFound", { effect: action }), "error");
+      } else {
+        terminalStore.addOutput(t("messages.configBgUsage"), "warning");
+      }
       return;
     }
     if (module === "search" && action === "set") {

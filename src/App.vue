@@ -6,6 +6,7 @@ import AppTerminal from "@/components/Terminal/AppTerminal.vue";
 import AIPanel from "@/components/AI/AIPanel.vue";
 import ConfigPanel from "@/components/Config/ConfigPanel.vue";
 import ToastContainer from "@/components/Common/ToastContainer.vue";
+import BgContainer from "@/components/Background/BgContainer.vue";
 
 const tabs = [
   { id: "terminal", label: "Terminal", icon: Terminal },
@@ -17,17 +18,18 @@ const activeTab = ref<string>("terminal");
 </script>
 
 <template>
+  <BgContainer />
   <TerminalShell>
     <template #tabs>
       <button
         v-for="tab in tabs"
         :key="tab.id"
-        class="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono transition-all duration-200"
+        class="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono transition-all duration-200 focus:outline-none"
         :class="activeTab === tab.id ? 'text-(--text-hint) bg-(--accent)' : 'text-(--text-primary)'"
         @click="() => (activeTab = tab.id)"
       >
         <component :is="tab.icon" :size="13" />
-        <span class="hidden sm:inline">{{ tab.label }}</span>
+        <span class="hiddebuttonnline">{{ tab.label }}</span>
       </button>
     </template>
 

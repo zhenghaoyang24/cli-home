@@ -1,6 +1,6 @@
 {
   "name": "clihome",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "module",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
   "dependencies": {
     "lucide-vue-next": "^0.31.0",
     "marked": "^18.0.4",
+    "ogl": "^1.0.11",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "^3.4.21",

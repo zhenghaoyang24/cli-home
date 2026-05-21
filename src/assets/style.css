@@ -36,7 +36,10 @@
   /* Semantic */
   --success: #9ece6a;
   --success-bg: rgba(158, 206, 106, 0.15);
+  --success-bd: rgba(158, 206, 106, 0.25);
   --error: #f7768e;
+  --error-bg: rgba(247, 118, 142, 0.15);
+  --error-bd: rgba(247, 118, 142, 0.25);
   --warning: #e0af68;
   --warning-bg: rgba(224, 175, 104, 0.04);
   --warning-bd: rgba(224, 175, 104, 0.13);
@@ -87,6 +90,9 @@ body {
     border: none;
     outline: none;
     font-family: inherit;
+    &:hover {
+      filter: brightness(1.1) contrast(110%);
+    }
   }
   input:focus {
     outline: none;
@@ -94,7 +100,7 @@ body {
   }
 }
 
-body::before {
+/* body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -109,7 +115,7 @@ body::before {
     );
   pointer-events: none;
   z-index: 9999;
-}
+} */
 
 #app {
   min-height: 100vh;
