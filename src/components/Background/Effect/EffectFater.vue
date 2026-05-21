@@ -1,3 +1,12 @@
+<!--
+  Component: CRT Glitch Effect
+  Adapted from vue-bits.dev (https://vue-bits.dev/)
+  Authored by David Haz
+  Licensed under MIT License
+
+  Special thanks to the vue-bits.dev project for creating and
+  sharing this open-source Vue component.
+-->
 <script setup lang="ts">
 import { Color, Mesh, Program, Renderer, Triangle } from "ogl";
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";

@@ -29,6 +29,7 @@ export function useCommands() {
     const lower = input.toLowerCase();
     const allHints: HintItem[] = [
       { command: "help", desc: t("terminal.help") },
+      { command: "about", desc: t("terminal.about") },
       { command: "clear", desc: t("terminal.clear") },
       { command: "history", desc: t("terminal.history") },
       { command: "search <keyword>", desc: t("terminal.searchKeyword") },
@@ -102,6 +103,7 @@ export function useCommands() {
     );
     const cmds = [
       ["help", t("terminal.help")],
+      ["about", t("terminal.about")],
       ["clear", t("terminal.clear")],
       ["history", t("terminal.history")],
       ["search <keyword>", t("terminal.searchKeyword")],
@@ -426,6 +428,17 @@ export function useCommands() {
       case "help":
         showHelp();
         break;
+      case "about": {
+        terminalStore.addOutput("", "output");
+        terminalStore.addOutput(`  ${__APP_NAME__}  v${__APP_VERSION__}`, "success");
+        terminalStore.addOutput(`  ${__APP_DESCRIPTION__}`, "output");
+        terminalStore.addOutput("", "output");
+        terminalStore.addOutput(`  Author:  ${__APP_AUTHOR__}`, "info");
+        terminalStore.addOutput(`  License: ${__APP_LICENSE__}`, "info");
+        terminalStore.addOutput(`  Repo:    ${__APP_REPOSITORY__}`, "info");
+        terminalStore.addOutput("", "output");
+        break;
+      }
       case "clear":
         terminalStore.clearHistory();
         break;

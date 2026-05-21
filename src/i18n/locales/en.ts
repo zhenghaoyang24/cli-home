@@ -1,6 +1,7 @@
 export default {
   terminal: {
     help: "Show this help",
+    about: "Show project information",
     clear: "Clear terminal",
     history: "Command history",
     searchKeyword: "Search with default engine",

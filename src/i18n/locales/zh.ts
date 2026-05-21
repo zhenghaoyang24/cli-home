@@ -1,6 +1,7 @@
 export default {
   terminal: {
     help: "显示此帮助",
+    about: "显示项目信息",
     clear: "清空终端",
     history: "命令历史",
     searchKeyword: "默认引擎搜索",

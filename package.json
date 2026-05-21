@@ -1,6 +1,16 @@
 {
   "name": "clihome",
-  "version": "1.0.3",
+  "version": "1.0.4",
+  "description": "A browser homepage that brings the classic terminal experience to your new tab.",
+  "author": {
+    "name": "zhenghaoyang24",
+    "github": "https://github.com/zhenghaoyang24"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhenghaoyang24/cli-home"
+  },
   "type": "module",
   "private": true,
   "scripts": {

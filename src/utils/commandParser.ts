@@ -14,6 +14,8 @@ export function parseCommand(input: string): Command {
   switch (command) {
     case "help":
       return { type: "help", args, raw: input };
+    case "about":
+      return { type: "about", args, raw: input };
     case "clear":
       return { type: "clear", args, raw: input };
     case "history":

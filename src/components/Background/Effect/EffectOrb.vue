@@ -1,3 +1,12 @@
+<!--
+  Component: Morphing Fluid Light Orb Effect
+  Adapted from vue-bits.dev (https://vue-bits.dev/)
+  Authored by David Haz
+  Licensed under MIT License
+
+  Special thanks to the vue-bits.dev project for creating and
+  sharing this open-source Vue component.
+-->
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch, useTemplateRef } from "vue";
 import { Renderer, Program, Mesh, Triangle, Vec3 } from "ogl";

@@ -1,3 +1,12 @@
+<!--
+  Component: Random Character Flicker Effect
+  Adapted from vue-bits.dev (https://vue-bits.dev/)
+  Authored by David Haz
+  Licensed under MIT License
+
+  Special thanks to the vue-bits.dev project for creating and
+  sharing this open-source Vue component.
+-->
 <template>
   <div class="relative overflow-hidden">
     <canvas ref="canvasRef" class="top-0 left-0 absolute w-full h-full" />

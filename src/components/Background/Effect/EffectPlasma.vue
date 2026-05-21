@@ -1,3 +1,12 @@
+<!--
+  Component: Fluid Plasma Light Effect
+  Adapted from vue-bits.dev (https://vue-bits.dev/)
+  Authored by David Haz
+  Licensed under MIT License
+
+  Special thanks to the vue-bits.dev project for creating and
+  sharing this open-source Vue component.
+-->
 <script setup lang="ts">
 import { Mesh, Program, Renderer, Triangle } from "ogl";
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";

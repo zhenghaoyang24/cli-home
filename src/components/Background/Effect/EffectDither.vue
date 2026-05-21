@@ -1,3 +1,12 @@
+<!--
+  Component: Dynamic Wave Pattern Effect
+  Adapted from vue-bits.dev (https://vue-bits.dev/)
+  Authored by David Haz
+  Licensed under MIT License
+
+  Special thanks to the vue-bits.dev project for creating and
+  sharing this open-source Vue component.
+-->
 <template>
   <div ref="containerRef" class="w-full h-full absolute top-0 left-0" />
 </template>

@@ -1,3 +1,12 @@
+<!--
+  Component: Multi-layer Particle Starfield Effect
+  Adapted from vue-bits.dev (https://vue-bits.dev/)
+  Authored by David Haz
+  Licensed under MIT License
+
+  Special thanks to the vue-bits.dev project for creating and
+  sharing this open-source Vue component.
+-->
 <script setup lang="ts">
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
 import { onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue";
