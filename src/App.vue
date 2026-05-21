@@ -32,7 +32,7 @@ const activeTab = ref<string>("terminal");
     </template>
 
     <AppTerminal v-show="activeTab === 'terminal'" class="w-full" />
-    <AIPanel v-show="activeTab === 'ai'" class="w-full" />
+    <AIPanel v-show="activeTab === 'ai'" :active="activeTab === 'ai'" class="w-full" />
     <ConfigPanel v-show="activeTab === 'config'" class="w-full" />
   </TerminalShell>
   <ToastContainer />

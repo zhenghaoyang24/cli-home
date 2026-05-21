@@ -147,7 +147,7 @@ export function useCommands() {
       case "add": {
         if (!engineName || !engineUrl) {
           terminalStore.addOutput(t("messages.searchAddUsage"), "warning");
-          terminalStore.addOutput(t("messages.searchAddTip"), "output");
+          terminalStore.addOutput(t("messages.searchAddTip", ["{}", "{query}"]), "output");
           return;
         }
         try {

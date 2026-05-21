@@ -11,12 +11,16 @@ import {
   generateMessageId,
 } from "@/services/aiService";
 
+const MAX_MESSAGES = 100;
+
 export const useAIStore = defineStore(
   "ai",
   () => {
     const config = ref<AIConfig>({ ...DEFAULT_AI_CONFIG });
     const messages = ref<AIMessage[]>([]);
     const isLoading = ref(false);
+
+    const isMaxLimit = computed(() => messages.value.length >= MAX_MESSAGES);
 
     const updateConfig = (key: keyof AIConfig, value: string | number | undefined) => {
       if (value === undefined || value === "") return;
@@ -85,6 +89,8 @@ export const useAIStore = defineStore(
       messages,
       isLoading,
       hasApiKey,
+      isMaxLimit,
+      MAX_MESSAGES,
       updateConfig,
       setProvider,
       PROVIDERS,
@@ -98,7 +104,15 @@ export const useAIStore = defineStore(
   },
   {
     persist: {
-      pick: ["config"],
+      pick: ["config", "messages"],
+      serializer: {
+        serialize: value => JSON.stringify(value),
+        deserialize: value =>
+          JSON.parse(value, (_key, val) => {
+            if (_key === "timestamp") return new Date(val);
+            return val;
+          }),
+      },
     },
   },
 );

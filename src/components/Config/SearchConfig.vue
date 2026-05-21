@@ -15,25 +15,30 @@ const newUrl = ref("");
 const pendingDelete = ref<{ id: string; name: string } | null>(null);
 
 const add = () => {
-  if (!newName.value || !newUrl.value) return;
-  if (!newUrl.value.includes("{query}") && !newUrl.value.includes("${")) {
-    showToast(t("components.urlMustIncludePlaceholder"), "warning");
+  if (!newName.value || !newUrl.value) {
+    showToast(t("components.pleaseFillComplete"), "warning");
     return;
   }
-  searchStore.addEngine({ name: newName.value, url: newUrl.value });
-  newName.value = "";
-  newUrl.value = "";
-  showAdd.value = false;
+  if (!newUrl.value.includes("{query}") && !newUrl.value.includes("{}")) {
+    showToast(t("components.urlMustIncludePlaceholder", ["{}", "{query}"]), "warning");
+    return;
+  }
+  try {
+    searchStore.addEngine({ name: newName.value, url: newUrl.value });
+    showToast(t("messages.searchAdded", { name: newName.value }), "success");
+    newName.value = "";
+    newUrl.value = "";
+    showAdd.value = false;
+  } catch (e) {
+    showToast((e as Error).message, "error");
+  }
 };
 
 const confirmDelete = () => {
   if (!pendingDelete.value) return;
   try {
     searchStore.removeEngine(pendingDelete.value.id);
-    showToast(
-      t("messages.searchDeleted", { name: pendingDelete.value.name }),
-      "success",
-    );
+    showToast(t("messages.searchDeleted", { name: pendingDelete.value.name }), "success");
   } catch (e) {
     showToast((e as Error).message, "error");
   }
@@ -87,7 +92,11 @@ const confirmDelete = () => {
         class="space-y-2 p-3 rounded-lg bg-(--bg-surface) border border-(--border-main)"
       >
         <AppInput v-model="newName" type="text" placeholder="Engine name" />
-        <AppInput v-model="newUrl" type="text" placeholder="URL (with {query} or ${})" />
+        <AppInput
+          v-model="newUrl"
+          type="text"
+          :placeholder="t('components.urlMustIncludePlaceholder', ['{}', '{query}'])"
+        />
         <button
           class="w-full py-2 rounded text-[11px] font-mono transition-colors text-(--accent)"
           style="background: var(--accent-bg); border: 1px solid var(--accent-bd)"
