@@ -3,19 +3,14 @@ defineSlots<{
   tabs(): unknown;
   default(): unknown;
 }>();
-
-const containerStyle = {
-  width: "720px",
-  background: "var(--bg-panel)",
-  boxShadow: "0 0 60px var(--shadow), 0 0 120px var(--glow-b), 0 30px 80px rgba(0, 0, 0, 0.9)",
-};
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 z-10">
+  <div
+    class="w-185 max-md:w-screen flex flex-col items-center justify-center min-h-screen max-md:p-2 p-4 z-10"
+  >
     <div
-      class="terminal-glow rounded-xl overflow-hidden border border-(--border-main)"
-      :style="containerStyle"
+      class="w-full terminal-glow rounded-xl overflow-hidden border border-(--border-main) bg-(--bg-panel)"
     >
       <div
         class="flex items-center justify-between px-4 py-2.5 border border-(--border-main) bg-(--bg-surface)"
@@ -26,7 +21,7 @@ const containerStyle = {
             <div class="w-3 h-3 rounded-full" style="background: var(--dot-yellow)" />
             <div class="w-3 h-3 rounded-full" style="background: var(--dot-green)" />
           </div>
-          <span class="text-xs font-mono ml-2 text-(--text-label)">CLI Home — zsh</span>
+          <span class="text-xs font-mono ml-2 text-(--text-label)">CLI Home</span>
         </div>
 
         <nav class="flex items-center gap-0.5">
@@ -34,10 +29,7 @@ const containerStyle = {
         </nav>
       </div>
 
-      <div
-        class="terminal-content relative flex flex-col overflow-hidden"
-        style="height: 400px; width: 100%"
-      >
+      <div class="h-110 max-md:h-80 w-full terminal-content relative flex flex-col overflow-hidden">
         <slot />
       </div>
     </div>

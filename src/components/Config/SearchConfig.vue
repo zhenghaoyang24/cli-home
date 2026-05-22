@@ -9,6 +9,14 @@ import ConfirmDialog from "@/components/Common/ConfirmDialog.vue";
 
 const { t } = useI18n();
 const searchStore = useSearchStore();
+
+function isValidUrl(str: string): boolean {
+  const pattern = /^https?:\/\/[\w.-]+(\.[\w-]+)+(\/[\w.~/?%#&=+\-@!$'()*,:;]*)*$/i;
+  return pattern.test(
+    str.startsWith("http://") || str.startsWith("https://") ? str : `https://${str}`,
+  );
+}
+
 const showAdd = ref(false);
 const newName = ref("");
 const newUrl = ref("");
@@ -21,6 +29,11 @@ const add = () => {
   }
   if (!newUrl.value.includes("{query}") && !newUrl.value.includes("{}")) {
     showToast(t("components.urlMustIncludePlaceholder", ["{}", "{query}"]), "warning");
+    return;
+  }
+  const testUrl = newUrl.value.replace(/\{query\}/g, "test").replace(/\{\}/g, "test");
+  if (!isValidUrl(testUrl)) {
+    showToast(t("messages.invalidUrl", { url: newUrl.value }), "error");
     return;
   }
   try {

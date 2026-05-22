@@ -9,6 +9,14 @@ import ConfirmDialog from "@/components/Common/ConfirmDialog.vue";
 
 const { t } = useI18n();
 const shortcutsStore = useShortcutsStore();
+
+function isValidUrl(str: string): boolean {
+  const pattern = /^https?:\/\/[\w.-]+(\.[\w-]+)+(\/[\w.~/?%#&=+\-@!$'()*,:;]*)*$/i;
+  return pattern.test(
+    str.startsWith("http://") || str.startsWith("https://") ? str : `https://${str}`,
+  );
+}
+
 const showForm = ref(false);
 const editingId = ref<string | null>(null);
 const editName = ref("");
@@ -41,6 +49,10 @@ const save = () => {
     showToast(t("components.pleaseFillComplete"), "warning");
     return;
   }
+  if (!isValidUrl(editUrl.value)) {
+    showToast(t("messages.invalidUrl", { url: editUrl.value }), "error");
+    return;
+  }
   try {
     if (editingId.value)
       shortcutsStore.updateShortcut(editingId.value, editName.value, editUrl.value);
@@ -69,9 +81,7 @@ const confirmDelete = () => {
   <div class="space-y-5">
     <div class="flex items-center gap-2">
       <span class="text-lg text-(--text-primary)">⌘</span>
-      <h3 class="text-sm font-mono tracking-wide text-(--text-primary)">
-        Shortcut Config
-      </h3>
+      <h3 class="text-sm font-mono tracking-wide text-(--text-primary)">Shortcut Config</h3>
     </div>
 
     <div class="flex items-center justify-between">

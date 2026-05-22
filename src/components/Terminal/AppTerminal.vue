@@ -18,8 +18,8 @@ const scrollToBottom = () => {
 };
 
 watch(
-  () => terminalStore.history.map((h) => h.content).join(""),
-  () => scrollToBottom()
+  () => terminalStore.history.map(h => h.content).join(""),
+  () => scrollToBottom(),
 );
 
 const handleNavigate = (dir: "up" | "down") => terminalStore.navigateHistory(dir);

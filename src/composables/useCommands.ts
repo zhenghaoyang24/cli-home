@@ -142,12 +142,10 @@ export function useCommands() {
   };
 
   function isValidUrl(str: string): boolean {
-    try {
-      new URL(str.startsWith("http://") || str.startsWith("https://") ? str : `https://${str}`);
-      return true;
-    } catch {
-      return false;
-    }
+    const pattern = /^https?:\/\/[\w.-]+(\.[\w-]+)+(\/[\w.~/?%#&=+\-@!$'()*,:;]*)*$/i;
+    return pattern.test(
+      str.startsWith("http://") || str.startsWith("https://") ? str : `https://${str}`,
+    );
   }
 
   const handleSearch = (args: string[]) => {
@@ -393,12 +391,18 @@ export function useCommands() {
 
   const handleDate = () => {
     const now = new Date();
-    const str = now.getFullYear() +
-      "-" + String(now.getMonth() + 1).padStart(2, "0") +
-      "-" + String(now.getDate()).padStart(2, "0") +
-      " " + String(now.getHours()).padStart(2, "0") +
-      ":" + String(now.getMinutes()).padStart(2, "0") +
-      ":" + String(now.getSeconds()).padStart(2, "0");
+    const str =
+      now.getFullYear() +
+      "-" +
+      String(now.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(now.getDate()).padStart(2, "0") +
+      " " +
+      String(now.getHours()).padStart(2, "0") +
+      ":" +
+      String(now.getMinutes()).padStart(2, "0") +
+      ":" +
+      String(now.getSeconds()).padStart(2, "0");
     terminalStore.addOutput(t("messages.dateTime", { datetime: str }), "success");
   };
 
@@ -408,9 +412,8 @@ export function useCommands() {
       terminalStore.addOutput(t("messages.pingUsage"), "warning");
       return;
     }
-    const url = target.startsWith("http://") || target.startsWith("https://")
-      ? target
-      : `https://${target}`;
+    const url =
+      target.startsWith("http://") || target.startsWith("https://") ? target : `https://${target}`;
     if (!isValidUrl(url)) {
       terminalStore.addOutput(t("messages.invalidUrl", { url: target }), "error");
       return;

@@ -19,7 +19,16 @@ export const useShortcutsStore = defineStore(
       return `https://${url}`;
     }
 
+    function isValidUrl(str: string): boolean {
+      const pattern =
+        /^https?:\/\/[\w.-]+(\.[\w-]+)+(\/[\w.~/?%#&=+\-@!$'()*,:;]*)*$/i;
+      return pattern.test(
+        /^https?:\/\//i.test(str) ? str : `https://${str}`,
+      );
+    }
+
     const addShortcut = (name: string, url: string) => {
+      if (!isValidUrl(url)) throw new Error("无效的 URL 地址");
       if (shortcuts.value.some(s => s.name.toLowerCase() === name.toLowerCase())) {
         throw new Error("快捷指令已存在");
       }
@@ -34,6 +43,7 @@ export const useShortcutsStore = defineStore(
     };
 
     const updateShortcut = (id: string, name: string, url: string) => {
+      if (!isValidUrl(url)) throw new Error("无效的 URL 地址");
       const existing = shortcuts.value.find(s => s.id === id);
       if (!existing) throw new Error("快捷指令不存在");
       if (shortcuts.value.some(s => s.id !== id && s.name.toLowerCase() === name.toLowerCase())) {
