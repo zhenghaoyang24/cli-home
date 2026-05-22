@@ -28,7 +28,6 @@ export default {
     date: "显示当前日期和时间",
     ping: "Ping 网络地址",
     directInput: "直接输入内容",
-    commandReference: "CLI HOME 命令参考",
   },
   messages: {
     searching: "搜索中 [{engine}]: {query}",

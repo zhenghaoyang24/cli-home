@@ -28,7 +28,6 @@ export default {
     date: "Show current date and time",
     ping: "Ping a network address",
     directInput: "Direct input for default search",
-    commandReference: "CLI HOME Command Reference",
   },
   messages: {
     searching: "Searching [{engine}]: {query}",

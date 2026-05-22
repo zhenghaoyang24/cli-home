@@ -92,52 +92,68 @@ export function useCommands() {
 
   const showHelp = () => {
     terminalStore.addOutput("", "output");
-    terminalStore.addOutput(
-      "┌───────────────────────────────────────────────────────────────────┐",
-      "info",
-    );
-    terminalStore.addOutput(
-      `│                   ${t("terminal.commandReference").padEnd(48)}│`,
-      "info",
-    );
-    terminalStore.addOutput(
-      "┌───────────────────────────────────────────────────────────────────┐",
-      "info",
-    );
-    const cmds = [
+    const standalone = [
+      ["<direct input>", t("terminal.directInput")],
       ["help", t("terminal.help")],
       ["about", t("terminal.about")],
       ["clear", t("terminal.clear")],
       ["history", t("terminal.history")],
-      ["search <keyword>", t("terminal.searchKeyword")],
-      ["search <engine> <keyword>", t("terminal.searchEngineKeyword")],
-      ["search add <name> <URL>", t("terminal.searchAdd")],
-      ["search list", t("terminal.searchList")],
-      ["search default <engine>", t("terminal.searchDefault")],
-      ["search delete <engine>", t("terminal.searchDelete")],
-      ["<direct input>", t("terminal.directInput")],
-      ["chat <question>", t("terminal.chatQuestion")],
-      ["chat set <key> <url> <model>", t("terminal.chatConfig")],
-      ["chat clear", t("terminal.chatClear")],
-      ["goto <name>", t("terminal.gotoName")],
-      ["goto add <name> <URL>", t("terminal.gotoAdd")],
-      ["goto list", t("terminal.gotoList")],
-      ["goto edit <name> <URL>", t("terminal.gotoEdit")],
-      ["goto delete <name>", t("terminal.gotoDelete")],
-      ["config language <en|cn>", t("terminal.configLanguage")],
-      ["config language list", t("terminal.configLanguageList")],
-      ["config bg <effect>", t("terminal.configBg")],
-      ["config bg list", t("terminal.configBgList")],
       ["date", t("terminal.date")],
       ["ping <url>", t("terminal.ping")],
+    ] as [string, string][];
+
+    type Group = [string, [string, string][]];
+    const groups: Group[] = [
+      [
+        "search",
+        [
+          ["<keyword>", t("terminal.searchKeyword")],
+          ["<engine> <keyword>", t("terminal.searchEngineKeyword")],
+          ["add <name> <URL>", t("terminal.searchAdd")],
+          ["list", t("terminal.searchList")],
+          ["default <engine>", t("terminal.searchDefault")],
+          ["delete <engine>", t("terminal.searchDelete")],
+        ],
+      ],
+      [
+        "chat",
+        [
+          ["<question>", t("terminal.chatQuestion")],
+          ["set <key> <url> <model>", t("terminal.chatConfig")],
+          ["clear", t("terminal.chatClear")],
+        ],
+      ],
+      [
+        "goto",
+        [
+          ["<name>", t("terminal.gotoName")],
+          ["add <name> <URL>", t("terminal.gotoAdd")],
+          ["list", t("terminal.gotoList")],
+          ["edit <name> <URL>", t("terminal.gotoEdit")],
+          ["delete <name>", t("terminal.gotoDelete")],
+        ],
+      ],
+      [
+        "config",
+        [
+          ["language <en|cn>", t("terminal.configLanguage")],
+          ["language list", t("terminal.configLanguageList")],
+          ["bg <effect>", t("terminal.configBg")],
+          ["bg list", t("terminal.configBgList")],
+        ],
+      ],
     ];
-    cmds.forEach(([cmd, desc]) => {
-      terminalStore.addOutput(`│  ${cmd.padEnd(30)} ${desc.padEnd(34)}│`, "info");
+
+    standalone.forEach(([cmd, desc]) => {
+      terminalStore.addOutput(`  ${cmd.padEnd(30)} ${desc.padEnd(34)}`, "info");
     });
-    terminalStore.addOutput(
-      "┌───────────────────────────────────────────────────────────────────┐",
-      "info",
-    );
+    groups.forEach(([parent, children]) => {
+      terminalStore.addOutput(`  ${parent}`, "info");
+      children.forEach(([cmd, desc], i) => {
+        const branch = i === children.length - 1 ? "'" : "|";
+        terminalStore.addOutput(`    ${branch} ${cmd.padEnd(28)} ${desc.padEnd(34)}`, "info");
+      });
+    });
     terminalStore.addOutput("", "output");
   };
 
