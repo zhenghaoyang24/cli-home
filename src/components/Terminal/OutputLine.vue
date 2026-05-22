@@ -8,7 +8,7 @@ defineProps<{
 const getConfig = (type: OutputLine["type"]) => {
   switch (type) {
     case "input":
-      return { color: "var(--accent)", prefix: "❯" };
+      return { color: "var(--text-input-cmd)", prefix: "❯" };
     case "success":
       return { color: "var(--success)", prefix: "" };
     case "error":
