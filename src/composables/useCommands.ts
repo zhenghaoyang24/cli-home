@@ -51,6 +51,8 @@ export function useCommands() {
       { command: "config language list", desc: t("terminal.configLanguageList") },
       { command: "config bg <effect>", desc: t("terminal.configBg") },
       { command: "config bg list", desc: t("terminal.configBgList") },
+      { command: "date", desc: t("terminal.date") },
+      { command: "ping <url>", desc: t("terminal.ping") },
     ];
     return allHints
       .filter(h => h.command.toLowerCase().startsWith(lower))
@@ -126,6 +128,8 @@ export function useCommands() {
       ["config language list", t("terminal.configLanguageList")],
       ["config bg <effect>", t("terminal.configBg")],
       ["config bg list", t("terminal.configBgList")],
+      ["date", t("terminal.date")],
+      ["ping <url>", t("terminal.ping")],
     ];
     cmds.forEach(([cmd, desc]) => {
       terminalStore.addOutput(`│  ${cmd.padEnd(30)} ${desc.padEnd(34)}│`, "info");
@@ -136,6 +140,15 @@ export function useCommands() {
     );
     terminalStore.addOutput("", "output");
   };
+
+  function isValidUrl(str: string): boolean {
+    try {
+      new URL(str.startsWith("http://") || str.startsWith("https://") ? str : `https://${str}`);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   const handleSearch = (args: string[]) => {
     const { action, query, engineName, engineUrl } = parseSearchArgs(searchStore.engines, args);
@@ -157,6 +170,10 @@ export function useCommands() {
         if (!engineName || !engineUrl) {
           terminalStore.addOutput(t("messages.searchAddUsage"), "warning");
           terminalStore.addOutput(t("messages.searchAddTip", ["{}", "{query}"]), "output");
+          return;
+        }
+        if (!isValidUrl(engineUrl)) {
+          terminalStore.addOutput(t("messages.invalidUrl", { url: engineUrl }), "error");
           return;
         }
         try {
@@ -250,6 +267,10 @@ export function useCommands() {
           terminalStore.addOutput(t("messages.gotoAddUsage"), "warning");
           return;
         }
+        if (!isValidUrl(url)) {
+          terminalStore.addOutput(t("messages.invalidUrl", { url }), "error");
+          return;
+        }
         try {
           shortcutsStore.addShortcut(name, url);
           terminalStore.addOutput(t("messages.added", { name }), "success");
@@ -261,6 +282,10 @@ export function useCommands() {
       case "edit": {
         if (!name || !url) {
           terminalStore.addOutput(t("messages.gotoEditUsage"), "warning");
+          return;
+        }
+        if (!isValidUrl(url)) {
+          terminalStore.addOutput(t("messages.invalidUrl", { url }), "error");
           return;
         }
         try {
@@ -363,6 +388,47 @@ export function useCommands() {
         }
         break;
       }
+    }
+  };
+
+  const handleDate = () => {
+    const now = new Date();
+    const str = now.getFullYear() +
+      "-" + String(now.getMonth() + 1).padStart(2, "0") +
+      "-" + String(now.getDate()).padStart(2, "0") +
+      " " + String(now.getHours()).padStart(2, "0") +
+      ":" + String(now.getMinutes()).padStart(2, "0") +
+      ":" + String(now.getSeconds()).padStart(2, "0");
+    terminalStore.addOutput(t("messages.dateTime", { datetime: str }), "success");
+  };
+
+  const handlePing = async (args: string[]) => {
+    const target = args[0];
+    if (!target) {
+      terminalStore.addOutput(t("messages.pingUsage"), "warning");
+      return;
+    }
+    const url = target.startsWith("http://") || target.startsWith("https://")
+      ? target
+      : `https://${target}`;
+    if (!isValidUrl(url)) {
+      terminalStore.addOutput(t("messages.invalidUrl", { url: target }), "error");
+      return;
+    }
+    terminalStore.addOutput(t("messages.pinging", { target }), "info");
+    terminalStore.flushOutput();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    const start = performance.now();
+    try {
+      await fetch(url, { signal: controller.signal, mode: "no-cors" });
+      const elapsed = (performance.now() - start).toFixed(0);
+      terminalStore.addOutput(t("messages.pingSuccess", { target, time: elapsed }), "success");
+    } catch {
+      const elapsed = (performance.now() - start).toFixed(0);
+      terminalStore.addOutput(t("messages.pingTimeout", { target, time: elapsed }), "error");
+    } finally {
+      clearTimeout(timeout);
     }
   };
 
@@ -478,6 +544,12 @@ export function useCommands() {
         break;
       case "config":
         handleConfig(parsed.args);
+        break;
+      case "date":
+        handleDate();
+        break;
+      case "ping":
+        handlePing(parsed.args);
         break;
     }
   };

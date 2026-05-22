@@ -28,6 +28,10 @@ export function parseCommand(input: string): Command {
       return { type: "goto", args, raw: input };
     case "config":
       return { type: "config", args, raw: input };
+    case "date":
+      return { type: "date", args, raw: input };
+    case "ping":
+      return { type: "ping", args, raw: input };
     default:
       return { type: "search", args: [command, ...args], raw: input };
   }
