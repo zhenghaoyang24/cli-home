@@ -96,12 +96,27 @@ export const useAIStore = defineStore(
 
     const hasApiKey = computed(() => !!config.value.apiKey);
 
+    const matchedProvider = computed(() => {
+      const url = config.value.apiUrl;
+      if (!url) return null;
+      for (const [key, providerUrl] of Object.entries(PROVIDER_URLS)) {
+        try {
+          const origin = new URL(providerUrl).origin;
+          if (url.startsWith(origin)) return key;
+        } catch {
+          continue;
+        }
+      }
+      return null;
+    });
+
     return {
       config,
       messages,
       isLoading,
       hasApiKey,
       isMaxLimit,
+      matchedProvider,
       MAX_MESSAGES,
       updateConfig,
       setProvider,

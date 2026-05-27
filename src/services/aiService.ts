@@ -3,16 +3,16 @@ import { uid } from "@/utils/id";
 
 export const PROVIDERS = [
   {
-    key: "deepseek",
-    label: "DeepSeek",
-    hostname: "platform.deepseek.com",
-    url: "https://platform.deepseek.com/",
-  },
-  {
     key: "openai",
     label: "OpenAI",
     hostname: "platform.openai.com",
     url: "https://platform.openai.com/",
+  },
+  {
+    key: "deepseek",
+    label: "DeepSeek",
+    hostname: "platform.deepseek.com",
+    url: "https://platform.deepseek.com/",
   },
   {
     key: "anthropic",

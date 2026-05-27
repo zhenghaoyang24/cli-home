@@ -61,7 +61,7 @@ const aiStore = useAIStore();
           :key="p.key"
           class="group relative flex flex-col items-start p-3 rounded-lg text-left border transition-all"
           :class="
-            aiStore.config.provider === p.key
+            aiStore.matchedProvider === p.key
               ? 'text-(--accent) bg-(--accent-bg) border-(--accent-bd-str)'
               : 'text-(--text-dimmer) border-(--border-main) hover:border-(--text-dim)'
           "
@@ -74,7 +74,7 @@ const aiStore = useAIStore();
             rel="noopener noreferrer"
             class="mt-1 text-[10px] font-mono flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
             :class="
-              aiStore.config.provider === p.key ? 'text-(--accent)' : 'text-(--text-dim)'
+              aiStore.matchedProvider === p.key ? 'text-(--accent)' : 'text-(--text-dim)'
             "
             @click.stop
           >

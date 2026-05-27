@@ -15,6 +15,7 @@ import {
 import { setLocale } from "@/i18n";
 import { useBgEffect, ALL_EFFECTS } from "./useBgEffect";
 import { uid } from "@/utils/id";
+import { calc } from "@/services/calcService";
 
 export function useCommands() {
   const { t } = useI18n();
@@ -52,6 +53,7 @@ export function useCommands() {
       { command: "config bg <effect>", desc: t("terminal.configBg") },
       { command: "config bg list", desc: t("terminal.configBgList") },
       { command: "date", desc: t("terminal.date") },
+      { command: "calc <expression>", desc: t("terminal.calc") },
       { command: "ping <url>", desc: t("terminal.ping") },
     ];
     return allHints
@@ -99,6 +101,7 @@ export function useCommands() {
       ["clear", t("terminal.clear")],
       ["history", t("terminal.history")],
       ["date", t("terminal.date")],
+      ["calc <expression>", t("terminal.calc")],
       ["ping <url>", t("terminal.ping")],
     ] as [string, string][];
 
@@ -422,6 +425,21 @@ export function useCommands() {
     terminalStore.addOutput(t("messages.dateTime", { datetime: str }), "success");
   };
 
+  const handleCalc = (args: string[]) => {
+    const expression = args.join(" ").replace(/=\s*$/, "");
+    if (!expression) {
+      terminalStore.addOutput(t("messages.calcUsage"), "warning");
+      return;
+    }
+    try {
+      const result = calc(expression);
+      const formatted = Number.isInteger(result) ? String(result) : result.toFixed(4);
+      terminalStore.addOutput(`  ${expression} = ${formatted}`, "success");
+    } catch (e) {
+      terminalStore.addOutput(`✗ ${(e as Error).message}`, "error");
+    }
+  };
+
   const handlePing = async (args: string[]) => {
     const target = args[0];
     if (!target) {
@@ -566,6 +584,9 @@ export function useCommands() {
         break;
       case "date":
         handleDate();
+        break;
+      case "calc":
+        handleCalc(parsed.args);
         break;
       case "ping":
         handlePing(parsed.args);

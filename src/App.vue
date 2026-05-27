@@ -25,7 +25,11 @@ const activeTab = ref<string>("terminal");
         v-for="tab in tabs"
         :key="tab.id"
         class="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono transition-all duration-200 focus:outline-none"
-        :class="activeTab === tab.id ? 'text-(--text-hint) bg-(--accent)' : 'text-(--text-primary)'"
+        :class="
+          activeTab === tab.id
+            ? 'text-(--text-hint) bg-(--accent)'
+            : 'text-(--text-primary)'
+        "
         @click="() => (activeTab = tab.id)"
       >
         <component :is="tab.icon" :size="13" />

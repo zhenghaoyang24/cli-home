@@ -24,6 +24,8 @@ export function parseCommand(input: string): Command {
       return { type: "search", args, raw: input };
     case "chat":
       return { type: "chat", args, raw: input };
+    case "calc":
+      return { type: "calc", args, raw: input };
     case "goto":
       return { type: "goto", args, raw: input };
     case "config":
