@@ -16,6 +16,7 @@ import { setLocale } from "@/i18n";
 import { useBgEffect, ALL_EFFECTS } from "./useBgEffect";
 import { uid } from "@/utils/id";
 import { calc } from "@/services/calcService";
+import { rmb } from "@/services/rmbService";
 
 export function useCommands() {
   const { t } = useI18n();
@@ -56,6 +57,7 @@ export function useCommands() {
       { command: "calc <expression>", desc: t("terminal.calc") },
       { command: "ping <url>", desc: t("terminal.ping") },
       { command: "sysinfo", desc: t("terminal.sysinfo") },
+      { command: "rmb <amount>", desc: t("terminal.rmb") },
     ];
     return allHints
       .filter(h => h.command.toLowerCase().startsWith(lower))
@@ -105,6 +107,7 @@ export function useCommands() {
       ["calc <expression>", t("terminal.calc")],
       ["ping <url>", t("terminal.ping")],
       ["sysinfo", t("terminal.sysinfo")],
+      ["rmb <amount>", t("terminal.rmb")],
     ] as [string, string][];
 
     type Group = [string, [string, string][]];
@@ -566,6 +569,22 @@ export function useCommands() {
     terminalStore.addOutput(lines.join("\n"), "info");
   };
 
+  const handleRmb = (args: string[]) => {
+    const amount = args.join(" ");
+    if (!amount) {
+      terminalStore.addOutput(t("messages.rmbUsage"), "warning");
+      return;
+    }
+    try {
+      const result = rmb(amount);
+      terminalStore.addOutput("", "output");
+      terminalStore.addOutput(`  ${result}`, "success");
+      terminalStore.addOutput("", "output");
+    } catch (e) {
+      terminalStore.addOutput(`  ${(e as Error).message}`, "error");
+    }
+  };
+
   const handleConfig = (args: string[]) => {
     const { module, action, key, value } = parseConfigArgs(args);
     if (module === "language") {
@@ -690,6 +709,9 @@ export function useCommands() {
         break;
       case "sysinfo":
         handleSysinfo();
+        break;
+      case "rmb":
+        handleRmb(parsed.args);
         break;
     }
   };

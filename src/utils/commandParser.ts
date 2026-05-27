@@ -36,6 +36,8 @@ export function parseCommand(input: string): Command {
       return { type: "ping", args, raw: input };
     case "sysinfo":
       return { type: "sysinfo", args, raw: input };
+    case "rmb":
+      return { type: "rmb", args, raw: input };
     default:
       return { type: "search", args: [command, ...args], raw: input };
   }

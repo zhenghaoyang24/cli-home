@@ -29,6 +29,7 @@ export default {
     calc: "计算数学表达式",
     ping: "Ping 网络地址",
     sysinfo: "显示系统和浏览器信息",
+    rmb: "金额转换为中文大写人民币",
     directInput: "直接输入内容",
   },
   messages: {
@@ -106,6 +107,7 @@ export default {
     sysinfoYes: "是",
     sysinfoNo: "否",
     sysinfoUnknown: "未知",
+    rmbUsage: "用法: rmb <金额>",
   },
   components: {
     startAiChat: "启动 AI 对话",

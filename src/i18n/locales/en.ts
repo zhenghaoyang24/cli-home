@@ -29,6 +29,7 @@ export default {
     calc: "Evaluate a math expression",
     ping: "Ping a network address",
     sysinfo: "Show system and browser information",
+    rmb: "Convert amount to Chinese uppercase RMB",
     directInput: "Direct input for default search",
   },
   messages: {
@@ -107,6 +108,7 @@ export default {
     sysinfoYes: "Yes",
     sysinfoNo: "No",
     sysinfoUnknown: "Unknown",
+    rmbUsage: "Usage: rmb <amount>",
   },
   components: {
     startAiChat: "Start AI Chat",
