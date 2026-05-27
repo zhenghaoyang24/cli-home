@@ -28,6 +28,7 @@ export default {
     date: "显示当前日期和时间",
     calc: "计算数学表达式",
     ping: "Ping 网络地址",
+    sysinfo: "显示系统和浏览器信息",
     directInput: "直接输入内容",
   },
   messages: {
@@ -97,6 +98,14 @@ export default {
     pingSuccess: "来自 {target} 的回复: 时间={time}ms",
     pingTimeout: "请求 {target} 超时: 时间={time}ms",
     invalidUrl: "无效的 URL: {url}",
+    sysinfoBrowser: "浏览器",
+    sysinfoSystem: "系统",
+    sysinfoNetwork: "网络",
+    sysinfoEnabled: "已启用",
+    sysinfoDisabled: "已禁用",
+    sysinfoYes: "是",
+    sysinfoNo: "否",
+    sysinfoUnknown: "未知",
   },
   components: {
     startAiChat: "启动 AI 对话",

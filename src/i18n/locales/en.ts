@@ -28,6 +28,7 @@ export default {
     date: "Show current date and time",
     calc: "Evaluate a math expression",
     ping: "Ping a network address",
+    sysinfo: "Show system and browser information",
     directInput: "Direct input for default search",
   },
   messages: {
@@ -98,6 +99,14 @@ export default {
     pingSuccess: "Reply from {target}: time={time}ms",
     pingTimeout: "Request to {target} timed out: time={time}ms",
     invalidUrl: "Invalid URL: {url}",
+    sysinfoBrowser: "Browser",
+    sysinfoSystem: "System",
+    sysinfoNetwork: "Network",
+    sysinfoEnabled: "Enabled",
+    sysinfoDisabled: "Disabled",
+    sysinfoYes: "Yes",
+    sysinfoNo: "No",
+    sysinfoUnknown: "Unknown",
   },
   components: {
     startAiChat: "Start AI Chat",

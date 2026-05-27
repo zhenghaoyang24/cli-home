@@ -34,6 +34,8 @@ export function parseCommand(input: string): Command {
       return { type: "date", args, raw: input };
     case "ping":
       return { type: "ping", args, raw: input };
+    case "sysinfo":
+      return { type: "sysinfo", args, raw: input };
     default:
       return { type: "search", args: [command, ...args], raw: input };
   }

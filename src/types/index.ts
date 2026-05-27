@@ -1,5 +1,5 @@
 export interface Command {
-  type: "search" | "chat" | "goto" | "config" | "help" | "clear" | "history" | "about" | "date" | "ping" | "calc" | "unknown";
+  type: "search" | "chat" | "goto" | "config" | "help" | "clear" | "history" | "about" | "date" | "ping" | "calc" | "sysinfo" | "unknown";
   args: string[];
   raw: string;
 }

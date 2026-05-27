@@ -55,6 +55,7 @@ export function useCommands() {
       { command: "date", desc: t("terminal.date") },
       { command: "calc <expression>", desc: t("terminal.calc") },
       { command: "ping <url>", desc: t("terminal.ping") },
+      { command: "sysinfo", desc: t("terminal.sysinfo") },
     ];
     return allHints
       .filter(h => h.command.toLowerCase().startsWith(lower))
@@ -103,6 +104,7 @@ export function useCommands() {
       ["date", t("terminal.date")],
       ["calc <expression>", t("terminal.calc")],
       ["ping <url>", t("terminal.ping")],
+      ["sysinfo", t("terminal.sysinfo")],
     ] as [string, string][];
 
     type Group = [string, [string, string][]];
@@ -469,6 +471,101 @@ export function useCommands() {
     }
   };
 
+  const handleSysinfo = () => {
+    const n = navigator;
+    const s = screen;
+    const d = document;
+    const ua = n.userAgent;
+
+    const parseOS = (ua: string): string => {
+      const osMap: [RegExp, string][] = [
+        [/Windows NT 10[._]0/, "Windows 11/10"],
+        [/Windows NT 6[._]3/, "Windows 8.1"],
+        [/Windows NT 6[._]2/, "Windows 8"],
+        [/Windows NT 6[._]1/, "Windows 7"],
+        [/Windows NT 6[._]0/, "Windows Vista"],
+        [/Windows NT 5[._]1/, "Windows XP"],
+        [/Windows Phone ([\d._]+)/, "Windows Phone"],
+        [/Mac OS X ([_\d]+)/, "macOS"],
+        [/iPhone OS ([_\d]+)/, "iOS"],
+        [/Android ([\d._]+)/, "Android"],
+        [/CrOS/, "ChromeOS"],
+        [/Linux/, "Linux"],
+      ];
+      for (const [pattern, label] of osMap) {
+        const m = ua.match(pattern);
+        if (m) {
+          const ver = m[1] ? m[1].replace(/_/g, ".") : "";
+          return ver ? `${label} ${ver}` : label;
+        }
+      }
+      return n.platform || t("messages.sysinfoUnknown");
+    };
+
+    const parseBrowser = (ua: string): string => {
+      const browserMap: [RegExp, string][] = [
+        [/Edg\/([\d.]+)/, "Edge"],
+        [/OPR\/([\d.]+)/, "Opera"],
+        [/Firefox\/([\d.]+)/, "Firefox"],
+        [/Chrome\/([\d.]+)/, "Chrome"],
+        [/Version\/([\d.]+).*Safari/, "Safari"],
+      ];
+      for (const [pattern, label] of browserMap) {
+        const m = ua.match(pattern);
+        if (m) {
+          const ver = m[1].split(".").slice(0, 2).join(".");
+          return `${label} ${ver}`;
+        }
+      }
+      return t("messages.sysinfoUnknown");
+    };
+
+    const lines: string[] = [];
+
+    lines.push("");
+    lines.push(`  ${t("messages.sysinfoBrowser")}`);
+    lines.push(`  ${"─".repeat(36)}`);
+    lines.push(`    Browser:      ${parseBrowser(ua)}`);
+    lines.push(`    Platform:     ${n.platform}`);
+    lines.push(
+      `    Language:     ${n.language}${n.languages ? ` (${n.languages.join(", ")})` : ""}`,
+    );
+    lines.push(
+      `    Cookie:       ${n.cookieEnabled ? t("messages.sysinfoEnabled") : t("messages.sysinfoDisabled")}`,
+    );
+    lines.push(
+      `    Online:       ${n.onLine ? t("messages.sysinfoYes") : t("messages.sysinfoNo")}`,
+    );
+
+    lines.push("");
+    lines.push(`  ${t("messages.sysinfoSystem")}`);
+    lines.push(`  ${"─".repeat(36)}`);
+    lines.push(`    OS:           ${parseOS(ua)}`);
+    lines.push(`    CPU Cores:    ${n.hardwareConcurrency || t("messages.sysinfoUnknown")}`);
+    if ((n as any).deviceMemory) {
+      lines.push(`    Memory:       ${(n as any).deviceMemory} GB`);
+    }
+    lines.push(
+      `    Screen:       ${s.width} x ${s.height}${s.colorDepth ? ` (${s.colorDepth}-bit)` : ""}`,
+    );
+    lines.push(
+      `    Viewport:     ${d.documentElement?.clientWidth || window.innerWidth} x ${d.documentElement?.clientHeight || window.innerHeight}`,
+    );
+
+    const conn = (n as any).connection;
+    if (conn) {
+      lines.push("");
+      lines.push(`  ${t("messages.sysinfoNetwork")}`);
+      lines.push(`  ${"─".repeat(36)}`);
+      if (conn.effectiveType) lines.push(`    Type:         ${conn.effectiveType}`);
+      if (conn.downlink) lines.push(`    Downlink:     ${conn.downlink} Mbps`);
+      if (conn.rtt) lines.push(`    RTT:          ${conn.rtt} ms`);
+    }
+
+    lines.push("");
+    terminalStore.addOutput(lines.join("\n"), "info");
+  };
+
   const handleConfig = (args: string[]) => {
     const { module, action, key, value } = parseConfigArgs(args);
     if (module === "language") {
@@ -590,6 +687,9 @@ export function useCommands() {
         break;
       case "ping":
         handlePing(parsed.args);
+        break;
+      case "sysinfo":
+        handleSysinfo();
         break;
     }
   };
